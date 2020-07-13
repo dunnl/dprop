@@ -572,7 +572,7 @@ Admitted.
      even using induction) *)
 (** Surely it is reasonable to say Gödel's theorem proves the
     incompleteness of any reasonable number theory. It is the
-    _fundamental inability to every form a complete number theory_
+    _fundamental inability to ever form a complete number theory_
     which is so surprising.
 
     Furthermore, some additional logic from Gödel proves that such a theory
@@ -591,7 +591,12 @@ Admitted.
     up to ordinal isomorphism. If we upgrade first-order Peano
     arithmetic to its second-order version, both Coq and ZFC (etc.)
     prove that there is exactly one type/set that can model this
-    theory.
+    theory, so the valid first-order statements of second-order Peano
+    arithmeitic are precisely the "true" facts about natural numbers
+    (that are definable in first-order logic). Unfortunately, this
+    instantly proves second-order logic lacks the completeness
+    property of first-order logic, since the provable sentences of
+    second-order P.A. must be a strict subset of the true ones.
 
     And so provided you are willing to work within a powerful theory
     like Coq, there is absolutely a unique "thing" called the natural
