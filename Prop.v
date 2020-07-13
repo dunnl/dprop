@@ -65,6 +65,8 @@ Class valuation : Type :=
   ; excluded_middle : forall n, val n \/ ~ (val n)
   }.
 
+(** This coercion tells Coq that we can use a [valuation] as a
+    function [nat -> Prop] by using its [val] field, for convenience. *)
 Coercion val : valuation >-> Funclass.
 
 (** * Model theory *)
