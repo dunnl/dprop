@@ -1,0 +1,1134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link href="coqdoc.css" rel="stylesheet" type="text/css" />
+<link href="coqdocjs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="config.js"></script>
+<script type="text/javascript" src="coqdocjs.js"></script>
+</head>
+
+<body onload="document.getElementById('content').focus()">
+  <div id="header">
+    <span class="left">
+      <span class="modulename"> <script> document.write(document.title) </script> </span>
+    </span>
+
+    <span class="button" id="toggle-proofs"></span>
+
+    <span class="right">
+      <a href="../">Project Page</a>
+      <a href="./indexpage.html"> Index </a>
+      <a href="./index.html"> Table of Contents </a>
+    </span>
+</div>
+    <div id="content" tabindex="-1" onblur="document.getElementById('content').focus()">
+    <div id="main">
+<h1 class="libtitle">Library DProp.Prop_solutions</h1>
+
+<div class="code">
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Strings.String.html#"><span class="id" title="library">String</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="DProp.Tactics.html#"><span class="id" title="library">DProp.Tactics</span></a>.<br/>
+<span class="id" title="keyword">Require</span> <span class="id" title="keyword">Import</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#"><span class="id" title="library">List</span></a>.<br/>
+<span class="id" title="keyword">Import</span> <span class="id" title="var">List.ListNotations</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab10"></a><h1 class="section">Syntax</h1>
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Inductive</span> <a name="sentence"><span class="id" title="inductive">sentence</span></a> : <span class="id" title="keyword">Set</span> :=<br/>
+| <a name="p_top"><span class="id" title="constructor">p_top</span></a> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a><br/>
+| <a name="p_var"><span class="id" title="constructor">p_var</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a><br/>
+| <a name="p_conj"><span class="id" title="constructor">p_conj</span></a> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a><br/>
+| <a name="p_neg"><span class="id" title="constructor">p_neg</span></a> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+We ask Coq to infer that equality of sentences is decidable 
+</div>
+<div class="code">
+<span class="id" title="keyword">Scheme</span> <span class="id" title="var">Equality</span> <span class="id" title="keyword">for</span> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>.<br/>
+<span class="id" title="keyword">Check</span> <a class="idref" href="DProp.Prop_solutions.html#sentence_eq_dec"><span class="id" title="definition">sentence_eq_dec</span></a>. <span class="comment">(*&nbsp;:&nbsp;:&nbsp;forall&nbsp;x&nbsp;y&nbsp;:&nbsp;sentence,&nbsp;{x&nbsp;=&nbsp;y}&nbsp;+&nbsp;{x&nbsp;&lt;&gt;&nbsp;y}&nbsp;*)</span><br/>
+
+<br/>
+</div>
+
+<div class="doc">
+We'll give names to a few of the variables for convenience... 
+</div>
+<div class="code">
+<span class="comment">(*&nbsp;Notation&nbsp;"<span class="inlinecode"></span> <span class="inlinecode"><span class="id" title="var">n</span></span> <span class="inlinecode"></span>"&nbsp;:=&nbsp;(p_var&nbsp;n).&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">&quot;</span></a>'P'" := (<a class="idref" href="DProp.Prop_solutions.html#p_var"><span class="id" title="constructor">p_var</span></a> 0).<br/>
+<span class="id" title="keyword">Notation</span> <a name="3dd1a88ab2fafb257a003b99bf9a3ba7"><span class="id" title="notation">&quot;</span></a>'Q'" := (<a class="idref" href="DProp.Prop_solutions.html#p_var"><span class="id" title="constructor">p_var</span></a> 1).<br/>
+<span class="id" title="keyword">Notation</span> <a name="44aead62f885b3f9f3cfae66bb133e0c"><span class="id" title="notation">&quot;</span></a>'R'" := (<a class="idref" href="DProp.Prop_solutions.html#p_var"><span class="id" title="constructor">p_var</span></a> 2).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+... and set up some pleasant notations. Notice some of these
+    notations define new connectives, like disjunction, in terms of
+    simpler ones.
+
+<div class="paragraph"> </div>
+
+    These notations use Unicode. Proof General and CoqIDE both support
+    quick Unicode entry by typing TeX-like strings, see 
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> <a href="https://coq.github.io/doc/master/refman/practical-tools/coqide.html">Coqide information</a> (See "Using Unicode symbols") 
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> <a href="https://github.com/cpitclaudel/company-coq">Company Coq</a>
+
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Notation</span> <a name="276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">&quot;</span></a>⊤" := (<a class="idref" href="DProp.Prop_solutions.html#p_top"><span class="id" title="constructor">p_top</span></a>). <span class="comment">(*&nbsp;\top&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">&quot;</span></a>x ∧ y" := (<a class="idref" href="DProp.Prop_solutions.html#p_conj"><span class="id" title="constructor">p_conj</span></a> <span class="id" title="var">x</span> <span class="id" title="var">y</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 50). <span class="comment">(*&nbsp;\land&nbsp;or&nbsp;\wedge&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">&quot;</span></a>¬ x" := (<a class="idref" href="DProp.Prop_solutions.html#p_neg"><span class="id" title="constructor">p_neg</span></a> <span class="id" title="var">x</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 10). <span class="comment">(*&nbsp;\neg&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="1a3a4fd597219ab65145ec13c238adc3"><span class="id" title="notation">&quot;</span></a>⊥" := (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a>). <span class="comment">(*&nbsp;\bot&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="69989fa7eceaf90171daa1151728e2a6"><span class="id" title="notation">&quot;</span></a>x ∨ y" := (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">(¬</span></a> <span class="id" title="var">x</span> <a class="idref" href="DProp.Prop_solutions.html#7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">∧</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <span class="id" title="var">y</span><a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">)</span></a>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 50). <span class="comment">(*&nbsp;\lor&nbsp;or&nbsp;\vee&nbsp;*)</span><br/>
+<span class="id" title="keyword">Notation</span> <a name="b7ac1e3e03565b530c0280c1915a2046"><span class="id" title="notation">&quot;</span></a>x ⇒ y" := (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <span class="id" title="var">x</span> <a class="idref" href="DProp.Prop_solutions.html#69989fa7eceaf90171daa1151728e2a6"><span class="id" title="notation">∨</span></a> <span class="id" title="var">y</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 70). <span class="comment">(*&nbsp;\Rightarrow&nbsp;*)</span><br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Next we define the semantics of our language. We want to translate
+    sentences into Coq-level propositions, i.e. elements of type
+    <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>. You might expect to use <span class="inlinecode"><span class="id" title="var">bool</span></span> here instead. Both choices
+    "work," but using <span class="inlinecode"><span class="id" title="keyword">Prop</span></span> is more general and more natural for the
+    metatheory we build here today, and ultimately it better captures
+    the idea that a semantics maps object-level propositions into
+    host-level propositions. Further information about this topic is
+    provided below.  
+<div class="paragraph"> </div>
+
+ A valuation might also be called an <i>interpretation</i> or a <i>model</i>,
+    especially in the context of higher-order logics. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Class</span> <a name="valuation"><span class="id" title="record">valuation</span></a> : <span class="id" title="keyword">Type</span> :=<br/>
+&nbsp;&nbsp;{ <a name="val"><span class="id" title="projection">val</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <span class="id" title="keyword">Prop</span><br/>
+&nbsp;&nbsp;; <a name="excluded_middle"><span class="id" title="projection">excluded_middle</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">n</span>, <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">val</span></a> <a class="idref" href="DProp.Prop_solutions.html#n"><span class="id" title="variable">n</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">\/</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">(</span></a><a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">val</span></a> <a class="idref" href="DProp.Prop_solutions.html#n"><span class="id" title="variable">n</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">)</span></a><br/>
+&nbsp;&nbsp;}.<br/>
+
+<br/>
+<span class="id" title="keyword">Coercion</span> <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">val</span></a> <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">:</span></a> <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">valuation</span></a> <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">&gt;-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">Funclass</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab11"></a><h1 class="section">Model theory</h1>
+
+<div class="paragraph"> </div>
+
+ We define a recursive function, <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a></span>, which translates
+    sentences to "actual" propositions, meaning types whose sort is <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>.
+
+<div class="paragraph"> </div>
+
+    Another good name for this function could be "is_true" or "translation."
+    Notice that any valuation <span class="inlinecode"><a class="idref" href="DProp.Prop.html#v"><span class="id" title="variable">v</span></a></span> defines a subset <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a></span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#v"><span class="id" title="variable">v</span></a></span> of sentences,
+    namely the "true" ones.
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Fixpoint</span> <a name="denotation"><span class="id" title="definition">denotation</span></a> (<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>) (<span class="id" title="var">s</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">match</span> <a class="idref" href="DProp.Prop_solutions.html#s"><span class="id" title="variable">s</span></a> <span class="id" title="keyword">with</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="DProp.Prop_solutions.html#p_top"><span class="id" title="constructor">p_top</span></a> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a><br/>
+&nbsp;&nbsp;| <a class="idref" href="DProp.Prop_solutions.html#p_var"><span class="id" title="constructor">p_var</span></a> <span class="id" title="var">x</span> =&gt; <a class="idref" href="DProp.Prop_solutions.html#val"><span class="id" title="method">val</span></a> <span class="id" title="var">x</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="DProp.Prop_solutions.html#p_conj"><span class="id" title="constructor">p_conj</span></a> <span class="id" title="var">s1</span> <span class="id" title="var">s2</span> =&gt; <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <a class="idref" href="DProp.Prop_solutions.html#v"><span class="id" title="variable">v</span></a> <span class="id" title="var">s1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <a class="idref" href="DProp.Prop_solutions.html#v"><span class="id" title="variable">v</span></a> <span class="id" title="var">s2</span><br/>
+&nbsp;&nbsp;| <a class="idref" href="DProp.Prop_solutions.html#p_neg"><span class="id" title="constructor">p_neg</span></a> <span class="id" title="var">s1</span> =&gt; <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> (<a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <a class="idref" href="DProp.Prop_solutions.html#v"><span class="id" title="variable">v</span></a> <span class="id" title="var">s1</span>)<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">end</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Hereafter we let <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a></span> take the valuation as an implicit
+    argument. This follows common mathematical practice in which one
+    generally assumes some valuation is clear from the context.
+
+<div class="paragraph"> </div>
+
+    Some functions, such as <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a></span>, will take valuations explicitly
+    when this is more natural. 
+</div>
+<div class="code">
+<span class="id" title="var">Arguments</span> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> {<span class="id" title="var">v</span>} <span class="id" title="var">s</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">&quot;</span></a>⟦ ϕ ⟧" := (<a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <span class="id" title="var">ϕ</span>). <span class="comment">(*&nbsp;\llbracket&nbsp;and&nbsp;\rrbracket&nbsp;*)</span><br/>
+
+<br/>
+</div>
+
+<div class="doc">
+In this file, we're not very interested in individual valuations. Instead,
+    we would like define a notion of "truth" which abstracts over the valuation,
+    capturing the idea that a sentence is true under every possible interpretation.
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="tautology"><span class="id" title="definition">tautology</span></a> (<span class="id" title="var">ϕ</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) := <span class="id" title="keyword">forall</span> <span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>, <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The universal quantifier---the dependent product---can be thought
+    of as a kind of infinite conjunction asserting the truth of ϕ
+    under <i>every</i> interpretation. 
+<div class="paragraph"> </div>
+
+ But we aren't just interested in tautologies. Often we want to
+    restrict our attention to only those valuations which make certain
+    pre-chosen sentences true. We develop this idea now.  
+<div class="paragraph"> </div>
+
+ We require that the range of denotations for <span class="inlinecode"><a class="idref" href="DProp.Prop.html#v"><span class="id" title="variable">v</span></a></span> <span class="inlinecode">:</span> <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="record">valuation</span></a></span>
+    satisfy the law of excluded middle.  (You can read 'r' as 'range'
+    or 'restricted', since this stipulation is only required for those
+    propositions which are the denotation of a given valuation,
+    i.e. in the range of some valuation. 
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Lemma</span> <a name="full_lem"><span class="id" title="lemma">full_lem</span></a> : <span class="id" title="keyword">forall</span> {<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>}, <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">\/</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">ϕ</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">exact</span> (<a class="idref" href="DProp.Prop_solutions.html#excluded_middle"><span class="id" title="method">excluded_middle</span></a> <span class="id" title="var">n</span>).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span> := <span class="id" title="tactic">destruct</span> (<a class="idref" href="DProp.Prop_solutions.html#full_lem"><span class="id" title="lemma">full_lem</span></a> <span class="id" title="var">ϕ</span>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+A set of sentences is <i>satisfied</i> or <i>modelled</i> by a valuation if
+    all of its elements are true under that valuation. Elements of <span class="inlinecode"><a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a></span>
+    may also be called "axioms." 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="models"><span class="id" title="definition">models</span></a> (<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>) (<span class="id" title="var">Γ</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) : <span class="id" title="keyword">Prop</span> :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+A valuation that models Γ is called a model, unsurprisingly. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="model"><span class="id" title="definition">model</span></a> <span class="id" title="var">Γ</span> := <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">{</span></a> <span class="id" title="var">v</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">:</span></a> <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">|</span></a> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <a class="idref" href="DProp.Prop_solutions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Specif.html#6556914db359db999889decec6a4a562"><span class="id" title="notation">}</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+A set of axioms <i>entails</i> a sentence when that sentence is true
+    under all valuations that also satisfy the axioms, i.e. all
+    models. This relation also known as <i>semantic consequence</i> or
+    <i>logical consequence</i>.
+
+<div class="paragraph"> </div>
+
+    We might also read this definition as a restricted variant of
+    <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a></span> that intersects only over that subset of valuations
+    which satisfy Γ. This property is sometimes known as being /valid/
+    for Γ (but this word is sometimes used differently). When we
+    formalize our proof system, the most ideal outcome is that the
+    provable formulas are precisely the valid ones. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="entails"><span class="id" title="definition">entails</span></a> (<span class="id" title="var">Γ</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) (<span class="id" title="var">ϕ</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) :=<br/>
+&nbsp;&nbsp;<span class="id" title="keyword">forall</span> <span class="id" title="var">v</span>, <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <a class="idref" href="DProp.Prop_solutions.html#v"><span class="id" title="variable">v</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+
+<br/>
+<span class="id" title="keyword">Notation</span> <a name="f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">&quot;</span></a>Γ ⊧ ϕ" := (<a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 70).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Sample usage of the <span class="inlinecode"><span class="id" title="var">lem</span></span> tactic. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Goal</span> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">v</span></a> <a name="Unnamed_thm"><span class="id" title="definition">:</span></a> <a name="Unnamed_thm"><span class="id" title="definition">valuation</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a> <a name="Unnamed_thm"><span class="id" title="definition">\/</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">¬</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">left</span>. <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+<span class="id" title="keyword">Hint Unfold</span> <a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a> : <span class="id" title="var">dp</span>.<br/>
+<span class="id" title="keyword">Hint Unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> : <span class="id" title="var">dp</span>.<br/>
+<span class="id" title="keyword">Hint Unfold</span> <a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a> : <span class="id" title="var">dp</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Use the following tactic to quickly get rid unfold many definitions. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Tactic Notation</span> "unf" := (<span class="id" title="tactic">repeat</span> <span class="id" title="var">autounfold</span> <span class="id" title="keyword">with</span> <span class="id" title="var">dp</span> <span class="id" title="tactic">in</span> *).<br/>
+
+<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 1 (easy): Prove that a sentence is a tautology if and
+    only if it is entailed by the empty set of axioms.
+
+<div class="paragraph"> </div>
+
+    Note: This is almost true by definition, but formalizing logics in
+   Coq often means proving such "obvious" facts. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="exercise1"><span class="id" title="lemma">exercise1</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">&lt;-&gt;</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="DProp.Prop_solutions.html#f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">⊧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">ϕ</span>. <span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">taut</span>. <span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>. <span class="id" title="tactic">intro</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">taut</span>. <span class="id" title="tactic">specialize</span> (<span class="id" title="var">taut</span> <span class="id" title="var">v</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">models</span>. <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">models</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a>. <span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>. <span class="id" title="tactic">specialize</span> (<span class="id" title="var">models</span> <span class="id" title="var">v</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <span class="id" title="var">models</span>. <span class="id" title="tactic">intro</span> <span class="id" title="var">s</span>. <span class="id" title="tactic">intro</span> <span class="id" title="var">H</span>. <span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 2 (easy): Prove the following tautology.
+
+<div class="paragraph"> </div>
+
+ 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="exercise2"><span class="id" title="lemma">exercise2</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>, <a class="idref" href="DProp.Prop_solutions.html#tautology"><span class="id" title="definition">tautology</span></a> (<a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#69989fa7eceaf90171daa1151728e2a6"><span class="id" title="notation">∨</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">ϕ</span>. <span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intros</span> [<span class="id" title="var">contra</span> ?].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intros</span> [? <span class="id" title="var">contra</span>].<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 3 (medium): Have we formalized implication correctly?
+    Check our work by proving if <span class="inlinecode"><span class="id" title="var">x</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode"><span class="id" title="var">y</span></span> is true and <span class="inlinecode"><span class="id" title="var">x</span></span> is true, then
+    <span class="inlinecode"><span class="id" title="var">y</span></span> is true.
+
+<div class="paragraph"> </div>
+
+    Hint: Use the <span class="inlinecode"><span class="id" title="var">lem</span></span> tactic to do case analysis on <span class="inlinecode"><span class="id" title="var">Q</span></span>. You may
+    want to <span class="inlinecode"><span class="id" title="keyword">Unset</span></span> <span class="inlinecode"><span class="id" title="keyword">Printing</span></span> <span class="inlinecode"><span class="id" title="var">Notations</span></span>. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="exercise3"><span class="id" title="lemma">exercise3</span></a> : <span class="id" title="keyword">forall</span> (<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>), <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <a class="idref" href="DProp.Prop_solutions.html#b7ac1e3e03565b530c0280c1915a2046"><span class="id" title="notation">⇒</span></a> <a class="idref" href="DProp.Prop_solutions.html#3dd1a88ab2fafb257a003b99bf9a3ba7"><span class="id" title="notation">Q</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#3dd1a88ab2fafb257a003b99bf9a3ba7"><span class="id" title="notation">Q</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> [<span class="id" title="var">Hpq</span> <span class="id" title="var">Hp</span>].<br/>
+&nbsp;&nbsp;<span class="id" title="var">lem</span> <a class="idref" href="DProp.Prop_solutions.html#3dd1a88ab2fafb257a003b99bf9a3ba7"><span class="id" title="notation">Q</span></a>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">assert</span> (<span class="id" title="var">contra</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#3dd1a88ab2fafb257a003b99bf9a3ba7"><span class="id" title="notation">Q</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>) <span class="id" title="tactic">by</span> <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">Hpq</span> <span class="id" title="var">contra</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Logically equivalent formulas are those which have the same
+    denotation under every interpretation. Since we are interpreting
+    into <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>, rather than <span class="inlinecode"><span class="id" title="var">bool</span></span>, we define this notion using
+    biconditionality (at the Coq level) rather than equality of
+    boolean values, but the idea is the same. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Definition</span> <a name="equivalent"><span class="id" title="definition">equivalent</span></a> <span class="id" title="var">ϕ</span> ψ := <span class="id" title="keyword">forall</span> (<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a>), <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#4bfb4f2d0721ba668e3a802ab1b745a1"><span class="id" title="notation">&lt;-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a> <a class="idref" href="DProp.Prop_solutions.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 4 (easy): Prove that <span class="inlinecode"><span class="id" title="var">P</span></span> and <span class="inlinecode"><span class="id" title="var">P</span></span> <span class="inlinecode">∧</span> <span class="inlinecode">⊤</span> are semantically
+  equivalent.  
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="exercise4"><span class="id" title="lemma">exercise4</span></a> : <a class="idref" href="DProp.Prop_solutions.html#equivalent"><span class="id" title="definition">equivalent</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> (<a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <a class="idref" href="DProp.Prop_solutions.html#7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">∧</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#equivalent"><span class="id" title="definition">equivalent</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">HP</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">split</span>; [ <span class="id" title="tactic">assumption</span> | <span class="id" title="tactic">trivial</span> ].<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">assumption</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise <span class="inlinecode">5</span> (medium): Prove that <span class="inlinecode"><span class="id" title="var">P</span></span> and <span class="inlinecode"><span class="id" title="var">P</span></span> <span class="inlinecode">∨</span> <span class="inlinecode">¬</span> <span class="inlinecode">⊤</span> are
+     semantically equivalent.  Use <span class="inlinecode"><span class="id" title="var">lem</span></span> <span class="inlinecode"><span class="id" title="var">P</span></span>. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="exercise5"><span class="id" title="lemma">exercise5</span></a> : <a class="idref" href="DProp.Prop_solutions.html#equivalent"><span class="id" title="definition">equivalent</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> (<a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <a class="idref" href="DProp.Prop_solutions.html#69989fa7eceaf90171daa1151728e2a6"><span class="id" title="notation">∨</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#equivalent"><span class="id" title="definition">equivalent</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">HP</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">contra</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">contra</span>; <span class="id" title="var">contradiction</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">H</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">lem</span> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">contra</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <span class="id" title="var">v</span> 0 <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#63a68285c81db8f9bc456233bb9ed181"><span class="id" title="notation">~</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#True"><span class="id" title="inductive">True</span></a>) <span class="id" title="tactic">by</span> <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">H</span> <span class="id" title="var">contra</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 6 (hard): Why did the last exercise require law of
+     excluded middle, when Coq trivially proves the following
+     intuitionistic tautology? Can you prove that the last exercise
+     cannot be completed without LEM?  
+</div>
+<div class="code">
+<span class="id" title="keyword">Goal</span> <a name="Unnamed_thm0"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">:</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">Prop</span></a><a name="Unnamed_thm0"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">&lt;-&gt;</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">(</span></a><a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">\/</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">~</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">True</span></a><a name="Unnamed_thm0"><span class="id" title="definition">)</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">tauto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab12"></a><h1 class="section">Proof theory</h1>
+
+
+<div class="paragraph"> </div>
+
+    This section explores basic proof theory. The goal is to define a
+    particular syntactical notion called "proof," where each proof is
+    associated with a formula called its "conclusion." Formulas with
+    proofs are "theorems." The main theorem is that a formula ϕ
+    entailed by Γ precisely if there is a proof with conclusion ϕ
+    using only axioms from Γ, i.e. theorems are exactly validities.
+
+<div class="paragraph"> </div>
+
+  
+<div class="paragraph"> </div>
+
+ The following proof system is a natural deduction, which is
+    essentially the type system of the simply typed lambda
+    calculus. However, we are not formalizing lambda terms here, only
+    the type inhabitation property itself.
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Reserved Notation</span> &quot;Γ ⊢ ϕ" (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 90).<br/>
+<span class="id" title="keyword">Inductive</span> <a name="provable"><span class="id" title="inductive">provable</span></a> (<span class="id" title="var">Γ</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>) : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
+| <a name="j_var"><span class="id" title="constructor">j_var</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
+| <a name="j_conj_intro"><span class="id" title="constructor">j_conj_intro</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> ψ, <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">∧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a><br/>
+| <a name="j_conj_elim1"><span class="id" title="constructor">j_conj_elim1</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> ψ, <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">∧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
+| <a name="j_conj_elim2"><span class="id" title="constructor">j_conj_elim2</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> ψ, <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop_solutions.html#7a630e21245026e1b75685a10a5ca45a"><span class="id" title="notation">∧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a><br/>
+| <a name="j_neg_intro"><span class="id" title="constructor">j_neg_intro</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
+| <a name="j_neg_elim"><span class="id" title="constructor">j_neg_elim</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#1a3a4fd597219ab65145ec13c238adc3"><span class="id" title="notation">⊥</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
+| <a name="j_dne"><span class="id" title="constructor">j_dne</span></a>: <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">(</span></a><a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
+| <a name="j_top_intro"><span class="id" title="constructor">j_top_intro</span></a> : <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#276a4a3018138118cad52558d0b71a10"><span class="id" title="notation">⊤</span></a><br/>
+<span class="id" title="keyword">where</span> <a name="417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">&quot;</span></a>Γ ⊢ ϕ" := (<a class="idref" href="DProp.Prop_solutions.html#provable"><span class="id" title="inductive">provable</span></a> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+The next two lemmas are fundamental properties of most logics.
+    Substitution shows that provable hypotheses are
+    redundant. Weakening says unused hypotheses are okay and plays an
+    important role in proving substitution. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a name="weakening"><span class="id" title="lemma">weakening</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ1</span> <span class="id" title="var">Γ2</span> <span class="id" title="var">Γ3</span> <span class="id" title="var">ϕ</span>,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DProp.Prop_solutions.html#bbb14d0bcc77c44a469e43c5550510ff"><span class="id" title="variable">Γ1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c0158f5c62df1db2d6c7f19ff8ac537"><span class="id" title="variable">Γ2</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DProp.Prop_solutions.html#bbb14d0bcc77c44a469e43c5550510ff"><span class="id" title="variable">Γ1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="DProp.Prop_solutions.html#95bedf8a4a0451c9971ecc519faed4f9"><span class="id" title="variable">Γ3</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c0158f5c62df1db2d6c7f19ff8ac537"><span class="id" title="variable">Γ2</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> ? ? ? ? <span class="id" title="var">Hϕ</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">remember</span> (<span class="id" title="var">Γ1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <span class="id" title="var">Γ2</span>) <span class="id" title="keyword">as</span> <span class="id" title="var">Γ</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">generalize</span> <span class="id" title="tactic">dependent</span> <span class="id" title="var">Γ1</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">Hϕ</span>; <span class="id" title="tactic">intros</span>; <span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_var"><span class="id" title="constructor">j_var</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> ?<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#in_app_iff"><span class="id" title="lemma">List.in_app_iff</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_intro"><span class="id" title="constructor">j_conj_intro</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_elim1"><span class="id" title="constructor">j_conj_elim1</span></a>. <span class="id" title="tactic">eauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_elim2"><span class="id" title="constructor">j_conj_elim2</span></a>. <span class="id" title="tactic">eauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_neg_intro"><span class="id" title="constructor">j_neg_intro</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHHϕ</span> (<span class="id" title="var">ϕ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ1</span>)). <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> *. <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_neg_elim"><span class="id" title="constructor">j_neg_elim</span></a>. <span class="id" title="tactic">eauto</span> <span class="id" title="keyword">using</span> <span class="id" title="var">IHHϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_dne"><span class="id" title="constructor">j_dne</span></a>. <span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHHϕ</span> (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <span class="id" title="var">ϕ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ1</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> *. <span class="id" title="tactic">eauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_top_intro"><span class="id" title="constructor">j_top_intro</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+To picture substitution, imagine a natural deduction derivation D
+    that uses of ψ using hypotheses from Γ1, Γ2, and ϕ. Given a
+    natural deduction derivation E of ϕ, picture "moving up" the tree
+    of D and finding all leaves that introduce the axiom ϕ, and
+    replace them with E. Through Curry-Howard, this is essentially
+    function evaluation. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a name="substitution"><span class="id" title="lemma">substitution</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ1</span> <span class="id" title="var">ϕ</span> <span class="id" title="var">Γ2</span> ψ,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DProp.Prop_solutions.html#bbb14d0bcc77c44a469e43c5550510ff"><span class="id" title="variable">Γ1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">(</span></a><a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c0158f5c62df1db2d6c7f19ff8ac537"><span class="id" title="variable">Γ2</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">)</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DProp.Prop_solutions.html#6c0158f5c62df1db2d6c7f19ff8ac537"><span class="id" title="variable">Γ2</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<a class="idref" href="DProp.Prop_solutions.html#bbb14d0bcc77c44a469e43c5550510ff"><span class="id" title="variable">Γ1</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c0158f5c62df1db2d6c7f19ff8ac537"><span class="id" title="variable">Γ2</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6f9d76259b18aa9d2bd5fca149b789ed"><span class="id" title="variable">ψ</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> ? ? ? ? <span class="id" title="var">J1</span> <span class="id" title="var">J2</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">remember</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#app"><span class="id" title="abbreviation">List.app</span></a> <span class="id" title="var">Γ1</span> (<span class="id" title="var">ϕ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ2</span>)).<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">generalize</span> <span class="id" title="tactic">dependent</span> <span class="id" title="var">Γ1</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">J1</span>; <span class="id" title="tactic">intros</span> <span class="id" title="var">Γ1</span> <span class="id" title="var">Eq</span>; <span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">destruct</span> (<a class="idref" href="DProp.Prop_solutions.html#sentence_eq_dec"><span class="id" title="definition">sentence_eq_dec</span></a> <span class="id" title="var">ϕ</span> <span class="id" title="var">ϕ0</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="comment">(*&nbsp;Equal&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">replace</span> (<span class="id" title="var">Γ1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <span class="id" title="var">Γ2</span>) <span class="id" title="keyword">with</span> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <span class="id" title="var">Γ1</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#bc347c51eaf667706ae54503b26d52c6"><span class="id" title="notation">++</span></a> <span class="id" title="var">Γ2</span>) <span class="id" title="tactic">by</span> (<span class="id" title="tactic">rewrite</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#app_nil_l"><span class="id" title="lemma">app_nil_l</span></a>; <span class="id" title="tactic">auto</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#weakening"><span class="id" title="lemma">weakening</span></a>. <span class="id" title="tactic">rewrite</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#app_nil_l"><span class="id" title="lemma">app_nil_l</span></a>. <span class="id" title="tactic">auto</span>. }<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="comment">(*&nbsp;Unequal&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_var"><span class="id" title="constructor">j_var</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">rewrite</span> ?<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#in_app_iff"><span class="id" title="lemma">List.in_app_iff</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">try</span> <span class="id" title="tactic">tauto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">H</span>; <span class="id" title="tactic">subst</span>. <span class="id" title="var">contradiction</span>. <span class="id" title="tactic">tauto</span>. }<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_intro"><span class="id" title="constructor">j_conj_intro</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_elim1"><span class="id" title="constructor">j_conj_elim1</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">eapply</span> <a class="idref" href="DProp.Prop_solutions.html#j_conj_elim2"><span class="id" title="constructor">j_conj_elim2</span></a>; <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_neg_intro"><span class="id" title="constructor">j_neg_intro</span></a>. <span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ1</span> (<span class="id" title="var">ϕ0</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ1</span>)). <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> *. <span class="id" title="tactic">eauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_neg_elim"><span class="id" title="constructor">j_neg_elim</span></a> <span class="id" title="keyword">with</span> (<span class="id" title="var">ϕ</span> := <span class="id" title="var">ϕ0</span>); <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_dne"><span class="id" title="constructor">j_dne</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ1</span> (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <span class="id" title="var">ϕ0</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ1</span>)). <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> *. <span class="id" title="tactic">eauto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#j_top_intro"><span class="id" title="constructor">j_top_intro</span></a>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab13"></a><h1 class="section">Relating proofs to truths lp</h1>
+
+<div class="paragraph"> </div>
+
+ The following exercise is mostly straightforward but
+    requires a good grasp on the definitions in play. By unfolding the
+    definitions, we see that soundness is a computation with two inputs:
+<ul class="doclist">
+<li> a "proofs" of a "proposition" 
+
+</li>
+<li> a model of the axioms Γ
+
+</li>
+</ul>
+    and the output is exactly a (Coq-level) proof of the (Coq-level) proposition 
+    which interprets the "proposition" in that model!
+ 
+<div class="paragraph"> </div>
+
+ Exercise 7 (medium/hard): Prove that all sentences provable from Γ are
+    logically entailed by Γ.
+
+<div class="paragraph"> </div>
+
+    The negation introduction and double negation elimination cases
+    may require some pen-and-paper thinking.  
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="soundness"><span class="id" title="lemma">soundness</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">(</span></a><a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">⊧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;j_var&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">v</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intro</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">sat</span> <span class="id" title="var">ϕ</span> <span class="id" title="var">H</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;j_conj_intro&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">unf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="var">denotation</span> <span class="id" title="tactic">in</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHprf</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">firstorder</span>. <span class="comment">(*&nbsp;This&nbsp;is&nbsp;just&nbsp;like&nbsp;the&nbsp;previous&nbsp;proof,&nbsp;so&nbsp;let&nbsp;Coq&nbsp;do&nbsp;it&nbsp;*)</span><br/>
+&nbsp;&nbsp;- <span class="comment">(*&nbsp;j_neg_intro&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">unf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHprf</span> <span class="id" title="var">v</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">sat_strg</span> : <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="var">v</span> (<span class="id" title="var">ϕ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="id" title="tactic">intros</span> <span class="id" title="var">ax</span> <span class="id" title="var">axIn</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">sat</span> <span class="id" title="var">ax</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">destruct</span> <span class="id" title="var">axIn</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">subst</span>. <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <span class="id" title="tactic">auto</span>. }<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">exfalso</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> (<span class="id" title="var">IHprf</span> <span class="id" title="var">sat_strg</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">exact</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#I"><span class="id" title="constructor">I</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="tactic">in</span> *.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHprf</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="var">sat_strg</span> : <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="var">v</span> (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <span class="id" title="var">ϕ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#cbcf67aac0c2a85b8d93d37de9969adf"><span class="id" title="notation">::</span></a> <span class="id" title="var">Γ</span>)).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">ϕ0</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Hin</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">subst</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">assumption</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#models"><span class="id" title="definition">models</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">sat</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHprf</span> <span class="id" title="var">v</span> <span class="id" title="var">sat_strg</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">IHprf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">unfold</span> <a class="idref" href="DProp.Prop_solutions.html#entails"><span class="id" title="definition">entails</span></a>. <span class="id" title="tactic">intros</span>. <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+This next theorem is difficult to show, even for such a simple
+    logic. In fact, that we won't even try to prove it
+    in Coq. You are encouraged to attempt it to find where the
+    difficulty lies.
+
+<div class="paragraph"> </div>
+
+    Why should this be hard to prove? Consider the premise: In all
+    valuations satisfying every sentence of Γ, ϕ is true. This quite
+    abstract condition is essentially a statement about truth tables:
+    "If all rows of a truth table that also satisfy each formula in Γ
+    also satisfy ϕ, find a natural deduction derivation of ϕ."
+
+<div class="paragraph"> </div>
+
+    Notice the premise gives us almost no information about ϕ, not
+    even its basic structure. The sentences of Γ may also be very
+    complex, perhaps more complex than ϕ, so they don't necessary tell
+    us anything about ϕ's subformulas. In fact, while ϕ may be true
+    under every (Γ-satisfying) valuation, each row of the truth table
+    might make ϕ true "for different reasons," so to speak. Where do
+    we get started?
+
+<div class="paragraph"> </div>
+
+    Nonetheless, this theorem is true, and can even be proved constructively.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="completeness"><span class="id" title="lemma">completeness</span></a> :  <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">⊧</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">mod</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">unf</span>.<br/>
+&nbsp;&nbsp;<span class="comment">(*&nbsp;?????????????????????????????&nbsp;*)</span><br/>
+<span class="id" title="var">Admitted</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 8 (easy? hard?): Attempt to prove the following: "There
+  is a sentence of propositional logic that is neither provable nor
+  disprovable from the empty set of axioms."
+
+<div class="paragraph"> </div>
+
+  Use the formula <span class="inlinecode"><span class="id" title="var">P</span></span> (a simple propositional variable) as ϕ.  Attempt
+  to prove this by induction on the derivation of P. A template has been provided.
+  What happens?
+ 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="syntactical_incompleteness"><span class="id" title="lemma">syntactical_incompleteness</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">exists</span></a> <span class="id" title="var">ϕ</span><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">,</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">exists</span> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>; <span class="id" title="tactic">intro</span> <span class="id" title="var">J</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">Case</span> "P is not provable".<br/>
+</div>
+
+<div class="doc">
+We want to scrutinize the supposed derivation of <span class="inlinecode"><span class="id" title="var">P</span></span>.
+      If we just do <span class="inlinecode"><span class="id" title="tactic">induction</span></span> <span class="inlinecode"><span class="id" title="var">J</span></span>, Coq will automatically generalize over the context and conclusion P,
+      as if were trying to show there are no proofs of anything. To avoid this silly behavior,
+      we tell Coq to remember both the conclusion P and the emptiness of the context.
+      We also discharge trivial cases instantly. 
+</div>
+<div class="code">
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">remember</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">empty</span>; <span class="id" title="var">remember</span> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">conc</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">J</span>; <span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_var".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;for&nbsp;you&nbsp;to&nbsp;finish&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;contradiction,&nbsp;the&nbsp;conclusions&nbsp;don't&nbsp;match&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_elim1".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Why&nbsp;doesn't&nbsp;the&nbsp;induction&nbsp;hypothesis&nbsp;apply?&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_elim2".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Same&nbsp;story&nbsp;as&nbsp;above.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_neg_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;contradiction,&nbsp;the&nbsp;conclusions&nbsp;don't&nbsp;match&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_neg_elim".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Why&nbsp;doesn't&nbsp;the&nbsp;induction&nbsp;hypothesis&nbsp;apply?&nbsp;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_dne".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Why&nbsp;doesn't&nbsp;the&nbsp;induction&nbsp;hypothesis&nbsp;apply?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_top_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;contradiction,&nbsp;the&nbsp;conclusions&nbsp;don't&nbsp;match&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="var">Case</span> "~ P is not provable".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">remember</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <span class="id" title="keyword">as</span> <span class="id" title="var">empty</span>; <span class="id" title="var">remember</span> (<a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a>) <span class="id" title="keyword">as</span> <span class="id" title="var">conc</span>;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">induction</span> <span class="id" title="var">J</span>; <span class="id" title="tactic">subst</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_var".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;for&nbsp;you&nbsp;to&nbsp;finish&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;contradiction,&nbsp;the&nbsp;conclusions&nbsp;don't&nbsp;match&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_elim1".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_conj_elim2".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;Same&nbsp;story&nbsp;as&nbsp;above.&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_neg_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>. <span class="id" title="tactic">subst</span>; <span class="id" title="tactic">clear</span> <span class="id" title="var">Heqconc</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_neg_elim".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">IHJ</span> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#eq_refl"><span class="id" title="constructor">eq_refl</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_dne".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;What&nbsp;happens&nbsp;if&nbsp;you&nbsp;try&nbsp;<span class="inlinecode"><span class="id" title="tactic">inversion</span></span>&nbsp;on&nbsp;the&nbsp;<span class="inlinecode"><span class="id" title="var">J</span></span>?&nbsp;Why?<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">admit</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;+ <span class="id" title="var">SCase</span> "j_top_intro".<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">(*&nbsp;contradiction,&nbsp;the&nbsp;conclusions&nbsp;don't&nbsp;match&nbsp;*)</span><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">inversion</span> <span class="id" title="var">Heqconc</span>.<br/>
+<span class="id" title="keyword">Abort</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 9 (easy):
+    What do the hard cases above have in common? (Hint: Look at the 
+    names of the rules that caused us difficulty.).
+
+<div class="paragraph"> </div>
+
+ The theorem above seems obvious, but it is hard to show by
+    examining proof trees. The trouble is that in each elimination
+    rule, we cannot be confident that the rule used to prove the
+    hypothesis is a corresponding induction rule. Indeed, it might not
+    be: Perhaps we prove <span class="inlinecode"><span class="id" title="var">P</span></span> by proving <span class="inlinecode"><span class="id" title="var">P</span></span> <span class="inlinecode">/\</span> <span class="inlinecode"><span class="id" title="var">Q</span></span>, and perhaps to prove
+    /that/ we use double negation elimination (for example). Can you
+    rule this out?
+
+<div class="paragraph"> </div>
+
+    Although implication is not defined primitively, it is an
+    illustrative example: Perhaps we prove <span class="inlinecode"><span class="id" title="var">P</span></span> by showing <span class="inlinecode"><span class="id" title="var">Q</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode"><span class="id" title="var">P</span></span> and
+    <span class="inlinecode"><span class="id" title="var">Q</span></span>. How can we rule this out? Fundamentally we need a
+    <i>cut-elimination</i> theorem, specifically the corollary of a
+    canonical form lemma (or inversion lemma).
+
+<div class="paragraph"> </div>
+
+    We won't prove this hard theorem here. Instead, we can show the
+    above theorem by using soundness: We cannot prove <span class="inlinecode"><span class="id" title="var">P</span></span> because it
+    is not true in all models!  
+</div>
+<div class="code">
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a name="vtrue"><span class="id" title="definition">vtrue</span></a> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a> :=<br/>
+&nbsp;&nbsp;{| <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">val</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:=</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">fun</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">n</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">=&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">True</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">;</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">excluded_middle</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:=</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">ltac</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:(</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">intuition</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">)</span></a> |}.<br/>
+
+<br/>
+<span class="id" title="keyword">Definition</span> <a name="vfalse"><span class="id" title="definition">vfalse</span></a> : <a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="class">valuation</span></a> :=<br/>
+&nbsp;&nbsp;{| <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">val</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:=</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">fun</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">n</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">=&gt;</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">False</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">;</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">excluded_middle</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:=</span></a> <a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">ltac</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">:(</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">intuition</span></a><a class="idref" href="DProp.Prop_solutions.html#Build_valuation"><span class="id" title="constructor">)</span></a> |}.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Exercise 10 (medium): Prove the following statement using
+    the two constant valuations defined above. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Theorem</span> <a name="syntactical_incompleteness"><span class="id" title="lemma">syntactical_incompleteness</span></a> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">exists</span></a> <span class="id" title="var">ϕ</span><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#a883bdd010993579f99d60b3775bcf54"><span class="id" title="notation">,</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>) <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#ba2b0e492d2b4675a0acf3ea92aabadd"><span class="id" title="notation">/\</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#not"><span class="id" title="definition">not</span></a> (<a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="DProp.Prop_solutions.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop_solutions.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>).<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">exists</span> <a class="idref" href="DProp.Prop_solutions.html#0dddd2095df7a75b4b5d92820ebd27a5"><span class="id" title="notation">P</span></a>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">split</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#soundness"><span class="id" title="lemma">soundness</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">unf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">prf</span> <a class="idref" href="DProp.Prop_solutions.html#vfalse"><span class="id" title="definition">vfalse</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> @<a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <a class="idref" href="DProp.Prop_solutions.html#vfalse"><span class="id" title="definition">vfalse</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="id" title="tactic">intros</span> ? <span class="id" title="var">Hin</span>; <span class="id" title="tactic">inversion</span> <span class="id" title="var">Hin</span>. }<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">prf</span> <span class="id" title="var">H</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">intro</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">apply</span> <a class="idref" href="DProp.Prop_solutions.html#soundness"><span class="id" title="lemma">soundness</span></a> <span class="id" title="tactic">in</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">unf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">prf</span> <a class="idref" href="DProp.Prop_solutions.html#vtrue"><span class="id" title="definition">vtrue</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">assert</span> (<span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span> : <a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nil"><span class="id" title="constructor">nil</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> @<a class="idref" href="DProp.Prop_solutions.html#denotation"><span class="id" title="definition">denotation</span></a> <a class="idref" href="DProp.Prop_solutions.html#vtrue"><span class="id" title="definition">vtrue</span></a> <a class="idref" href="DProp.Prop_solutions.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{ <span class="id" title="tactic">intros</span> ? <span class="id" title="var">Hin</span>; <span class="id" title="tactic">inversion</span> <span class="id" title="var">Hin</span>. }<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">specialize</span> (<span class="id" title="var">prf</span> <span class="id" title="var">H</span>).<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="tactic">simpl</span> <span class="id" title="tactic">in</span> <span class="id" title="var">prf</span>.<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="id" title="var">contradiction</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+<a name="lab14"></a><h1 class="section">Commentary</h1>
+
+<div class="paragraph"> </div>
+
+<a name="lab15"></a><h2 class="section">Understanding Incompleteness</h2>
+
+
+<div class="paragraph"> </div>
+
+    So how can we understand Gödel's incompleteness theorem?
+
+<div class="paragraph"> </div>
+
+    Let's imagine starting over at the beginning. Suppose instead of
+    formalizing propositional logic, we allowed propositions to vary
+    over tuples of /terms/, as well as introducing quantifiers. This
+    would be first-order logic (FOL).
+
+<div class="paragraph"> </div>
+
+    Formalizing the syntax is not particularly hard (albeit
+    tedious). The semantics are also straightforward: The valuation
+    primarily consists of a type <span class="inlinecode"><span class="id" title="var">D</span></span> called the /domain/, with
+    constants mapped to terms of <span class="inlinecode"><span class="id" title="var">D</span></span>, and functions denoting Coq-level
+    functions over D. Finally, relations will denote subsets of D
+    (e.g., binary relations are of type <span class="inlinecode"><span class="id" title="var">D</span></span> <span class="inlinecode">-&gt;</span> <span class="inlinecode"><span class="id" title="var">D</span></span> <span class="inlinecode">-&gt;</span> <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>.
+
+<div class="paragraph"> </div>
+
+    The proof rules are also not too complicated: To prove a
+    universally quantified sentence, give a natural deduction proof of
+    the body after substitution by a fresh variable known as a
+    /parameter/. Existentials are proved by proving the body for an
+    arbitrary closed term.
+
+<div class="paragraph"> </div>
+
+    It turns out, this logic is also complete: if ϕ is true in all
+    models satisfying Γ, there is a natural deduction proof of ϕ using
+    the set Γ as axioms. This is Gödel's completeness theorem. First
+    order logic is essentially the strongest logic that can have this
+    property, as provability (as a semi-decidable property) is too
+    weak to properly capture the semantics of higher logics.
+
+<div class="paragraph"> </div>
+
+    Finally, instead of considering an arbitrary Γ, consider a
+    particular set of sentences called the /Peano axioms/. (This set
+    is actually infinite due to the induction schema, so we would need
+    to tweak our definitions to handle this.) This combination of
+    first-order logic with a fixed set Γ of Peano axioms is
+    first-order Peano arithmetic. Coq's natural numbers type <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span> is a
+    model of this theory, but one can show there are other models.   Gödel proved the following fact (actually, Gödel's theorem is
+    significantly more general. But the following is a corollary.):
+    There is a sentence ϕ of the language which is: <ul class="doclist">
+<li> True, in the
+    sense that it is true when interpreted into the model given by
+    <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>.
+<ul class="doclist">
+<li> Unprovable: There is no natural deduction derivation of
+
+</li>
+</ul>
+    this sentence.
+
+<div class="paragraph"> </div>
+
+    Since Gödel also proved first-order logic is complete, as an
+    instant corollary we see ϕ is:
+<ul class="doclist">
+<li> invalid: There are models in Coq of first-order Peano 
+      arithmetic in which the sentence is not true.
+
+</li>
+</ul>
+    
+</li>
+</ul>
+ This last fact is somewhat of a coincidence. Gödel's
+    incompleteness theorem applies equally to say, second-order
+    arithmetic. That theory also has a (different!) sentence which is
+    true when interpreted into Coq's <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span> type, but unprovable in this
+    theory. However, this sentence is valid because second order
+    arithmetic has only one model, <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>, in which the sentence is true.
+    
+<div class="paragraph"> </div>
+
+<a name="lab16"></a><h2 class="section">Why is incompleteness important? Or is it?</h2>
+
+
+<div class="paragraph"> </div>
+
+    Clearly, syntactical incompleteness is not generally
+    surprising. For instance 
+
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> Coq is incomplete because it neither
+       proves nor disproves LEM
+
+</li>
+<li> Group theory is incomplete because it
+       neither proves nor disproves the commutativity property
+
+</li>
+<li> Propositional logic is incomplete because it neither proves nor
+       disproves any atomic propositional symbol P 
+</li>
+</ul>
+
+<div class="paragraph"> </div>
+
+ It is somewhat surprising that Peano arithmetic is incomplete,
+       because it is not at all obvious which properties of <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span> are
+       being left out. What else can we add? But it's still not
+       terribly hard to understand, either.  
+<div class="paragraph"> </div>
+
+ But Gödel's theorem says a lot more than this, because the real
+    theorem proves that **any** theory of natural numbers is
+    incomplete, provided: 
+<div class="paragraph"> </div>
+
+<ul class="doclist">
+<li> we can recognize valid proofs when we see them
+
+</li>
+<li> the theory can prove basic facts (things which can be proved without
+     even using induction) 
+</li>
+</ul>
+ Surely it is reasonable to say Gödel's theorem proves the
+    incompleteness of any reasonable number theory. It is the
+    <i>fundamental inability to every form a complete number theory</i>
+    which is so surprising.
+
+<div class="paragraph"> </div>
+
+    Furthermore, some additional logic from Gödel proves that such a theory
+    cannot prove its own consistency. But why do we care? After all,
+    if we don't trust a logic, then we would never trust such a proof
+    of consistency in the first place. The answer is simple: Because
+    if arithmetic can't prove the consistency of itself, obviously it
+    could never prove the consistency of all of mathematics! This
+    effectively invalidates Hilbert's program to "finitize" mathematics. 
+<div class="paragraph"> </div>
+
+<a name="lab17"></a><h2 class="section">Does this mean natural numbers can't be defined?</h2>
+
+
+<div class="paragraph"> </div>
+
+    Not in any mathematical sense. Coq can prove the uniqueness of <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>
+    with some ease. ZFC (set theory) can also prove that there is a
+    set, omega, with the properties of natural numbers which is unique
+    up to ordinal isomorphism. If we upgrade first-order Peano
+    arithmetic to its second-order version, both Coq and ZFC (etc.)
+    prove that there is exactly one type/set that can model this
+    theory.
+
+<div class="paragraph"> </div>
+
+    And so provided you are willing to work within a powerful theory
+    like Coq, there is absolutely a unique "thing" called the natural
+    numbers. It just happens that there will be some sentence of our
+    logic that we cannot prove, even though it is true if you
+    interpret your metalogic as a formal theory (inside some other
+    theory).  
+<div class="paragraph"> </div>
+
+<a name="lab18"></a><h2 class="section">Interpreting into Prop and bool</h2>
+
+
+<div class="paragraph"> </div>
+
+    You might expect that we would translate propositional logic into
+    <span class="inlinecode"><span class="id" title="var">bool</span></span> instead. This would work for most purposes, and might better
+    align with your normal intuition for propositional logic, but
+    there are several reasons to prefer translation into <span class="inlinecode"><span class="id" title="keyword">Prop</span></span> over <span class="inlinecode"><span class="id" title="var">bool</span></span>:
+ 
+<div class="paragraph"> </div>
+
+    1.) Due to Coq's constructive nature, we can only write functions
+    of type <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#sentence"><span class="id" title="inductive">sentence</span></a></span> <span class="inlinecode">-&gt;</span> <span class="inlinecode"><span class="id" title="var">bool</span></span> that we can compute. This means we can only
+    describe computable models in Coq, which rules out much of
+    mathematics if you extend this to higher-order logics. In the best
+    case scenario, this is just an artificial limitation on which
+    individual models we can define in Coq. In some scenarios, it
+    might limit what we can prove about the metatheory, since we can't
+    describe uncomputable counterexamples, for example.
+ 
+<div class="paragraph"> </div>
+
+    2.) Ultimately a semantics **must** map object-level propositions
+    into meta-level propositions, since <span class="inlinecode"></span> <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">⊧</span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a></span> <span class="inlinecode"></span> is a proposition in
+    the host logic--that's the whole point. If we used a boolean
+    valued semantics in Coq, the notion <span class="inlinecode"><span class="id" title="var">X</span></span> <span class="inlinecode">⊧</span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a></span> must be understood as
+    the Coq-level proposition <span class="inlinecode">⟦</span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a></span> <span class="inlinecode">⟧</span> <span class="inlinecode">=</span> <span class="inlinecode">1</span> (for valuations satisfying
+    <span class="inlinecode"><span class="id" title="var">X</span></span>), which means our boolean-semantics must be composed with the
+    function <span class="inlinecode"><span class="id" title="keyword">fun</span></span> <span class="inlinecode"><span class="id" title="var">b</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="var">bool</span></span> <span class="inlinecode">=&gt;</span> <span class="inlinecode"><span class="id" title="var">b</span></span> <span class="inlinecode">=</span> <span class="inlinecode"><span class="id" title="var">true</span></span> <span class="inlinecode">:</span> <span class="inlinecode"><span class="id" title="var">bool</span></span> <span class="inlinecode">-&gt;</span> <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>. Again, this "works," but it
+    is somewhat awkward for some purposes in Coq.
+
+<div class="paragraph"> </div>
+
+    A <span class="inlinecode"><span class="id" title="var">bool</span></span>-valued semantics might be preferred if we want to compute
+    with propositional logic (such as to model circuits), but our
+    perspective is that <span class="inlinecode"><span class="id" title="keyword">Prop</span></span>-valued interpretations are the more
+    general approach, and more illuminating when understanding the
+    relationship between the host and guest logics. This approach is
+    called algebraic semantics, and with propositional logic it means
+    our valuatons can be any Boolean-algebra homomorphism. Using <span class="inlinecode"><span class="id" title="var">bool</span></span>
+    is then a kind of degenerate case.
+
+<div class="paragraph"> </div>
+
+    How is our approach more general? Consider that ⟦ p → p ⟧ is a
+    propositional tautology, and accordingly <span class="inlinecode">⟦</span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#p"><span class="id" title="variable">p</span></a></span> <span class="inlinecode">⟧</span> <span class="inlinecode">→</span> <span class="inlinecode">⟦</span> <span class="inlinecode"><a class="idref" href="DProp.Prop.html#p"><span class="id" title="variable">p</span></a></span> <span class="inlinecode">⟧</span> is
+    provable in Coq no matter what <span class="inlinecode"></span> <span class="inlinecode"><span class="id" title="keyword">Prop</span></span> <span class="inlinecode"></span> we assign to <span class="inlinecode"><a class="idref" href="DProp.Prop.html#p"><span class="id" title="variable">p</span></a></span>, even if
+    that proposition is not itself provable in Coq. This illustrates
+    that the soundness of propositional logic does not depend on the
+    fact that we often study computable models of this logic.
+
+<div class="paragraph"> </div>
+
+    However, there are some caveats to the algebraic approach in Coq:
+
+<div class="paragraph"> </div>
+
+    1. We must assume LEM, or at least assume (or prove) this property
+    for every valuation we consider in order to have soundness. This
+    is a result of interpreting propositional logic into a
+    constructive logic.
+
+<div class="paragraph"> </div>
+
+    2. If we want to "count" valuations (common when thinking about
+    circuits), the right notion of equivalence between two valuations
+    is that two interpretations yield equi-provable sentences in
+    Coq. Different valuations are rarely literally equal.
+
+<div class="paragraph"> </div>
+
+
+</div>
+<div class="code">
+</div>
+</div>
+<div id="footer">
+  Generated by <a href="http://coq.inria.fr/">coqdoc</a> and improved with <a href="https://github.com/tebbi/coqdocjs">CoqdocJS</a>
+</div>
+</div>
+</body>
+
+</html>

@@ -1,3 +1,5 @@
 -R . DProp
+-R solutions/ DProp
 Prop.v
 Tactics.v
+solutions/Prop_solutions.v

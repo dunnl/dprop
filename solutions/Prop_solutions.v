@@ -165,15 +165,27 @@ Tactic Notation "unf" := (repeat autounfold with dp in *).
     Note: This is almost true by definition, but formalizing logics in
    Coq often means proving such "obvious" facts. *)
 Theorem exercise1 : forall ϕ, tautology ϕ <-> nil ⊧ ϕ.
-Proof.
-Admitted.
+  intro ϕ. split.
+  - intro taut. intro v. intro H.
+    unfold tautology in taut. specialize (taut v).
+    assumption.
+  - intro models. unfold entails in models.
+    unfold tautology. intro v. specialize (models v).
+    apply models. intro s. intro H. inversion H.
+Qed.
 
 (** Exercise 2 (easy): Prove the following tautology.
     
  *)
 Theorem exercise2 : forall ϕ : sentence, tautology (ϕ ∨ ¬ ϕ).
 Proof.
-Admitted.
+  intro ϕ. intro v.
+  lem ϕ.
+  - simpl. intros [contra ?].
+    contradiction.
+  - simpl. intros [? contra].
+    contradiction.
+Qed.
   
 (** Exercise 3 (medium): Have we formalized implication correctly?
     Check our work by proving if [x ⇒ y] is true and [x] is true, then
@@ -183,7 +195,13 @@ Admitted.
     want to [Unset Printing Notations]. *)
 Theorem exercise3 : forall (v : valuation), ⟦ P ⇒ Q ⟧ /\ ⟦ P ⟧ -> ⟦ Q ⟧.
 Proof.
-Admitted.
+  intros v [Hpq Hp].
+  lem Q.
+  - assumption.
+  - assert (contra : ~ ~ ⟦ P ⟧ /\ ~ ⟦ Q ⟧) by auto.
+    specialize (Hpq contra).
+    contradiction.
+Qed.
   
 (** Logically equivalent formulas are those which have the same
     denotation under every interpretation. Since we are interpreting
@@ -196,13 +214,36 @@ Definition equivalent ϕ ψ := forall (v : valuation), ⟦ ϕ ⟧ <-> ⟦ ψ ⟧
   equivalent.  *)
 Theorem exercise4 : equivalent P (P ∧ ⊤).
 Proof.
-Admitted.
+  unfold equivalent.
+  intro v.
+  split.
+  - intro HP.
+    unfold denotation in *.
+    split; [ assumption | trivial ].
+  - intro H.
+    unfold denotation in *.
+    destruct H; assumption.
+Qed.
 
  (** Exercise [5] (medium): Prove that [P] and [P ∨ ¬ ⊤] are
      semantically equivalent.  Use [lem P]. *)
 Theorem exercise5 : equivalent P (P ∨ ¬ ⊤).
 Proof.
-Admitted.
+  unfold equivalent.
+  intro v.
+  split.
+  - intro HP.
+    unfold denotation in *.
+    intro contra.
+    destruct contra; contradiction.
+  - intro H.
+    lem P.
+    + assumption.
+    + unfold denotation in *.
+      assert (contra : ~ v 0 /\ ~ ~ True) by auto.
+      specialize (H contra).
+      contradiction.
+Qed.
 
  (** Exercise 6 (hard): Why did the last exercise require law of
      excluded middle, when Coq trivially proves the following
@@ -319,7 +360,65 @@ Qed.
     may require some pen-and-paper thinking.  *)
 Theorem soundness : forall Γ ϕ, (Γ ⊢ ϕ) -> Γ ⊧ ϕ.
 Proof.
-Admitted.
+  intros Γ ϕ prf.
+  induction prf.
+  - (* j_var *)
+    unfold entails.
+    intro v.
+    intro sat.
+    unfold models in sat.
+    specialize (sat ϕ H).
+    assumption.
+  - (* j_conj_intro *)
+    unf.
+    simpl.
+    auto.
+  - unfold entails in *.
+    simpl denotation in IHprf.
+    intros v sat.
+    specialize (IHprf v sat).
+    destruct IHprf.
+    assumption.
+  - firstorder. (* This is just like the previous proof, so let Coq do it *)
+  - (* j_neg_intro *)
+    unf.
+    intros v sat.
+    specialize (IHprf v).
+    lem ϕ.
+    + simpl in IHprf.
+      assert (sat_strg : models v (ϕ :: Γ)).
+      { intros ax axIn.
+        specialize (sat ax).
+        destruct axIn.
+        - subst. assumption.
+        - auto. }
+      exfalso.
+      apply (IHprf sat_strg).
+      exact I.
+    + assumption.
+  - unfold models in *.
+    intros v sat.
+    specialize (IHprf v sat).
+    simpl in IHprf.
+    contradiction.
+  - unfold models.
+    intros v sat.
+    lem ϕ.
+    + assumption.
+    + unfold models in IHprf.
+      assert (sat_strg : models v (¬ ϕ :: Γ)).
+      { unfold models.
+        intros ϕ0 Hin.
+        inversion Hin.
+        + subst. simpl. assumption.
+        + unfold models in sat.
+          auto.
+      }
+      specialize (IHprf v sat_strg).
+      simpl in IHprf.
+      contradiction.
+  - unfold entails. intros. simpl. auto.
+Qed.
 
 
 (** This next theorem is difficult to show, even for such a simple
@@ -472,7 +571,27 @@ Definition vfalse : valuation :=
     the two constant valuations defined above. *)
 Theorem syntactical_incompleteness : exists ϕ, not (nil ⊢ ϕ) /\ not (nil ⊢ ¬ ϕ).
 Proof.
-Admitted.
+  exists P.
+  split.
+  - intro prf.
+    apply soundness in prf.
+    unf.
+    specialize (prf vfalse).
+    assert (forall ϕ : sentence, List.In ϕ nil -> @denotation vfalse ϕ).
+    { intros ? Hin; inversion Hin. }
+    specialize (prf H).
+    simpl in prf.
+    contradiction.
+  - intro prf.
+    apply soundness in prf.
+    unf.
+    specialize (prf vtrue).
+    assert (forall ϕ : sentence, List.In ϕ nil -> @denotation vtrue ϕ).
+    { intros ? Hin; inversion Hin. }
+    specialize (prf H).
+    simpl in prf.
+    contradiction.
+Qed.
   
 
 (** * Commentary *)
