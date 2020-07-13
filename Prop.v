@@ -23,11 +23,11 @@ Notation "'R'" := (p_var 2).
 (** ... and set up some pleasant notations. Notice some of these
     notations define new connectives, like disjunction, in terms of
     simpler ones.
-    
-    These notations use Unicode. Proof General and CoqIDE both support
-    quick Unicode entry by typing TeX-like strings, see 
 
-   
+    These notations use Unicode. Proof General and CoqIDE both support
+    quick Unicode entry by typing TeX-like strings, see
+
+
    - #<a href="https://coq.github.io/doc/master/refman/practical-tools/coqide.html">Coqide information</a> (See "Using Unicode symbols")# *)
 (**
    - #<a href="https://github.com/cpitclaudel/company-coq">Company Coq</a>#
@@ -36,10 +36,10 @@ Notation "'R'" := (p_var 2).
 Notation "⊤" := (p_top). (* \top *)
 Notation "x ∧ y" := (p_conj x y) (at level 50). (* \land or \wedge *)
 Notation "¬ x" := (p_neg x) (at level 10). (* \neg *)
-Notation "⊥" := (¬ ⊤). (* \bot *)                   
+Notation "⊥" := (¬ ⊤). (* \bot *)
 Notation "x ∨ y" := (¬ (¬ x ∧ ¬ y)) (at level 50). (* \lor or \vee *)
 Notation "x ⇒ y" := (¬ x ∨ y) (at level 70). (* \Rightarrow *)
-      
+
 
 (** Next we define the semantics of our language. We want to translate
     sentences into Coq-level propositions, i.e. elements of type
@@ -52,7 +52,7 @@ Notation "x ⇒ y" := (¬ x ∨ y) (at level 70). (* \Rightarrow *)
 
 (** A valuation might also be called an _interpretation_ or a _model_,
     especially in the context of higher-order logics.
-    
+
     Notice that we require a valuation to come with a proof that the
     propositional symbols of our language are mapped to propositions
     for which the excluded middle is provable (or taken as an
@@ -166,7 +166,7 @@ Hint Unfold entails : dp.
 (** Use the following tactic to quickly get rid unfold many definitions. *)
 Tactic Notation "unf" := (repeat autounfold with dp in *).
 
-                          
+
 (** Exercise 1 (easy): Prove that a sentence is a tautology if and
     only if it is entailed by the empty set of axioms.
 
@@ -177,12 +177,12 @@ Proof.
 Admitted.
 
 (** Exercise 2 (easy): Prove the following tautology.
-    
+
  *)
 Theorem exercise2 : forall ϕ : sentence, tautology (ϕ ∨ ¬ ϕ).
 Proof.
 Admitted.
-  
+
 (** Exercise 3 (medium): Have we formalized implication correctly?
     Check our work by proving if [x ⇒ y] is true and [x] is true, then
     [y] is true.
@@ -192,7 +192,7 @@ Admitted.
 Theorem exercise3 : forall (v : valuation), ⟦ P ⇒ Q ⟧ /\ ⟦ P ⟧ -> ⟦ Q ⟧.
 Proof.
 Admitted.
-  
+
 (** Logically equivalent formulas are those which have the same
     denotation under every interpretation. Since we are interpreting
     into [Prop], rather than [bool], we define this notion using
@@ -221,7 +221,7 @@ Goal forall p : Prop, p <-> (p \/ ~ True).
 Qed.
 
 (** * Proof theory
-    
+
     This section explores basic proof theory. The goal is to define a
     particular syntactical notion called "proof," where each proof is
     associated with a formula called its "conclusion." Formulas with
@@ -314,9 +314,9 @@ Qed.
 (** The following exercise is mostly straightforward but
     requires a good grasp on the definitions in play. By unfolding the
     definitions, we see that soundness is a computation with two inputs:
-    - a "proofs" of a "proposition" 
+    - a "proofs" of a "proposition"
     - a model of the axioms Γ
-    and the output is exactly a (Coq-level) proof of the (Coq-level) proposition 
+    and the output is exactly a (Coq-level) proof of the (Coq-level) proposition
     which interprets the "proposition" in that model!
  *)
 
@@ -389,7 +389,7 @@ Proof.
       inversion Heqconc.
     + SCase "j_conj_elim1".
       specialize (IHJ eq_refl).
-      (* Why doesn't the induction hypothesis apply? 
+      (* Why doesn't the induction hypothesis apply?
          What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
@@ -401,7 +401,7 @@ Proof.
       inversion Heqconc.
     + SCase "j_neg_elim".
       specialize (IHJ eq_refl).
-      (* Why doesn't the induction hypothesis apply? 
+      (* Why doesn't the induction hypothesis apply?
          What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
@@ -449,7 +449,7 @@ Proof.
 Abort.
 
 (** Exercise 9 (easy):
-    What do the hard cases above have in common? (Hint: Look at the 
+    What do the hard cases above have in common? (Hint: Look at the
     names of the rules that caused us difficulty.).
 *)
 
@@ -466,30 +466,30 @@ Abort.
     [Q]. How can we rule this out? Fundamentally we need a
     _cut-elimination_ theorem, specifically the corollary of a
     canonical form lemma (or inversion lemma).
-    
+
     We won't prove this hard theorem here. Instead, we can show the
     above theorem by using soundness: We cannot prove [P] because it
     is not true in all models!  *)
 
 Definition vtrue : valuation :=
   {| val := fun n => True ; excluded_middle := ltac:(intuition) |}.
-                                                                   
+
 Definition vfalse : valuation :=
-  {| val := fun n => False ; excluded_middle := ltac:(intuition) |}. 
+  {| val := fun n => False ; excluded_middle := ltac:(intuition) |}.
 
 (** Exercise 10 (medium): Prove the following statement using
     the two constant valuations defined above. *)
 Theorem syntactical_incompleteness : exists ϕ, not (nil ⊢ ϕ) /\ not (nil ⊢ ¬ ϕ).
 Proof.
 Admitted.
-  
+
 
 (** * Commentary *)
 
 (** ** Understanding Incompleteness
 
     So how can we understand Gödel's incompleteness theorem?
-    
+
     Let's imagine starting over at the beginning. Suppose instead of
     formalizing propositional logic, we allowed propositions to vary
     over tuples of /terms/, as well as introducing quantifiers. This
@@ -501,7 +501,7 @@ Admitted.
     constants mapped to terms of [D], and functions denoting Coq-level
     functions over D. Finally, relations will denote subsets of D
     (e.g., binary relations are of type [D -> D -> Prop].
-    
+
     The proof rules are also not too complicated: To prove a
     universally quantified sentence, give a natural deduction proof of
     the body after substitution by a fresh variable known as a
@@ -525,17 +525,17 @@ Admitted.
     (** Gödel proved the following fact (actually, Gödel's theorem is
     significantly more general. But the following is a corollary.):
     There is a sentence ϕ of the language which is: *)
-(** - True, in the
-    sense that it is true when interpreted into the model given by
-    [nat].
+(**
+    - True, in the sense that it is true when interpreted into the model given by
+      [nat].
     - Unprovable: There is no natural deduction derivation of
-    this sentence.
+      this sentence.
 
     Since Gödel also proved first-order logic is complete, as an
     instant corollary we see ϕ is:
-    - invalid: There are models in Coq of first-order Peano 
+    - invalid: There are models in Coq of first-order Peano
       arithmetic in which the sentence is not true.
-    *) 
+    *)
 (** This last fact is somewhat of a coincidence. Gödel's
     incompleteness theorem applies equally to say, second-order
     arithmetic. That theory also has a (different!) sentence which is
@@ -547,7 +547,7 @@ Admitted.
 (** ** Why is incompleteness important? Or is it?
 
     Clearly, syntactical incompleteness is not generally
-    surprising. For instance 
+    surprising. For instance
 
      - Coq is incomplete because it neither
        proves nor disproves LEM
@@ -572,7 +572,7 @@ Admitted.
     incompleteness of any reasonable number theory. It is the
     _fundamental inability to every form a complete number theory_
     which is so surprising.
-    
+
     Furthermore, some additional logic from Gödel proves that such a theory
     cannot prove its own consistency. But why do we care? After all,
     if we don't trust a logic, then we would never trust such a proof
@@ -582,7 +582,7 @@ Admitted.
     effectively invalidates Hilbert's program to "finitize" mathematics. *)
 
 (** ** Does this mean natural numbers can't be defined?
-    
+
     Not in any mathematical sense. Coq can prove the uniqueness of [nat]
     with some ease. ZFC (set theory) can also prove that there is a
     set, omega, with the properties of natural numbers which is unique
