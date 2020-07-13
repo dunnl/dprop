@@ -1,6 +1,10 @@
 # DProp
 
+https://dunnl.github.io/dprop/
+
 **DProp** ("Dee prop"): A deep embedding of classical propositional logic into Coq.
+
+----
 
 This file is a quick tutorial to using Coq as a logical framework to
 study propositional logic, which is synonymous to saying we are
@@ -10,4 +14,6 @@ tutorial](https://coq.inria.fr/tutorial/1-basic-predicate-calculus)). This
 file is the backbone of a PL club presentation, as well as "homework"
 for the willing.
 
-We by defining the synax of propositional logic, taking as primitives conjunction, negation, and the top element. From there we define the semantics, but instead of looking at propositions as Boolean values (like most logic textbooks), we interpret into Coq's `Prop` sort. This is essentially a kind of [Algebraic semantics](https://en.wikipedia.org/wiki/Algebraic_semantics_(mathematical_logic)). For this to work, we axiomatize the law of excluded middle into Coq for propositional valuations---but since anything can be a valuation, this is equivalent to just assuming LEM in Coq. We could be more nuanced and define valuations to have a Boolean algebra as their target (meaning they include a proof of LEM for their range).
+We start by defining the synax of propositional logic, taking as primitives conjunction, negation, and the top element. From there we define the semantics, but instead of looking at propositions as `bool` values, we interpret into Coq's `Prop` sort. This is essentially a kind of [algebraic semantics](https://en.wikipedia.org/wiki/Algebraic_semantics_(mathematical_logic)). To get soundness, we have to require that valuations come with a proof that their range satisfies the law of excluded middle, which is essentially requiring that the codomain forms a boolean algebra.
+
+There are about 10 [SF-inspired](https://softwarefoundations.cis.upenn.edu/) exercises in the file. Some are easy, some are hard. We talk about soundness, and state completeness but admit it as an axiom. Near then we there are some notes on syntactical incompleteness. A proof by induction on deductions fails due to lack of normal forms (cut elimination), but the result can be shown easily using soundness. Finally, some commentary at the end is given for understanding Gödel's completeness and first incompleteness theorem using what we've learned about propositional logic.
