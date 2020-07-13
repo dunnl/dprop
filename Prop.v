@@ -51,7 +51,15 @@ Notation "x ⇒ y" := (¬ x ∨ y) (at level 70). (* \Rightarrow *)
     provided below.  *)
 
 (** A valuation might also be called an _interpretation_ or a _model_,
-    especially in the context of higher-order logics. *)
+    especially in the context of higher-order logics.
+    
+    Notice that we require a valuation to come with a proof that the
+    propositional symbols of our language are mapped to propositions
+    for which the excluded middle is provable (or taken as an
+    axiom). This is necessary for our logic to be sound, which is
+    discussed in the section on proof theory.
+
+*)
 Class valuation : Type :=
   { val : nat -> Prop
   ; excluded_middle : forall n, val n \/ ~ (val n)
@@ -312,11 +320,12 @@ Qed.
     which interprets the "proposition" in that model!
  *)
 
-(** Exercise 7 (medium/hard): Prove that all sentences provable from Γ are
-    logically entailed by Γ.
+(** Exercise 7 (medium/hard): Prove that all sentences provable from Γ
+    are logically entailed by Γ.
 
     The negation introduction and double negation elimination cases
-    may require some pen-and-paper thinking.  *)
+    may require some pen-and-paper thinking. You will certainly need
+    to use the [lem] tactic at some point. *)
 Theorem soundness : forall Γ ϕ, (Γ ⊢ ϕ) -> Γ ⊧ ϕ.
 Proof.
 Admitted.
