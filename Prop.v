@@ -301,7 +301,7 @@ Proof.
   - apply j_top_intro.
 Qed.
 
-(** * Relating proofs to truths lp*)
+(** * Relating proofs to truths*)
 
 (** The following exercise is mostly straightforward but
     requires a good grasp on the definitions in play. By unfolding the
