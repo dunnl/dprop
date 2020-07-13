@@ -124,7 +124,19 @@ Next we define the semantics of our language. We want to translate
 <div class="paragraph"> </div>
 
  A valuation might also be called an <i>interpretation</i> or a <i>model</i>,
-    especially in the context of higher-order logics. 
+    especially in the context of higher-order logics.
+
+<div class="paragraph"> </div>
+
+    Notice that we require a valuation to come with a proof that the
+    propositional symbols of our language are mapped to propositions
+    for which the excluded middle is provable (or taken as an
+    axiom). This is necessary for our logic to be sound, which is
+    discussed in the section on proof theory.
+
+<div class="paragraph"> </div>
+
+
 </div>
 <div class="code">
 <span class="id" title="keyword">Class</span> <a name="valuation"><span class="id" title="record">valuation</span></a> : <span class="id" title="keyword">Type</span> :=<br/>
@@ -543,13 +555,14 @@ To picture substitution, imagine a natural deduction derivation D
  
 <div class="paragraph"> </div>
 
- Exercise 7 (medium/hard): Prove that all sentences provable from Γ are
-    logically entailed by Γ.
+ Exercise 7 (medium/hard): Prove that all sentences provable from Γ
+    are logically entailed by Γ.
 
 <div class="paragraph"> </div>
 
     The negation introduction and double negation elimination cases
-    may require some pen-and-paper thinking.  
+    may require some pen-and-paper thinking. You will certainly need
+    to use the <span class="inlinecode"><span class="id" title="var">lem</span></span> tactic at some point. 
 </div>
 <div class="code">
 <span class="id" title="keyword">Theorem</span> <a name="soundness"><span class="id" title="lemma">soundness</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">(</span></a><a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">)</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop.html#f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">⊧</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
@@ -812,16 +825,19 @@ Exercise 10 (medium): Prove the following statement using
     first-order Peano arithmetic. Coq's natural numbers type <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span> is a
     model of this theory, but one can show there are other models.   Gödel proved the following fact (actually, Gödel's theorem is
     significantly more general. But the following is a corollary.):
-    There is a sentence ϕ of the language which is: <ul class="doclist">
-<li> True, in the
-    sense that it is true when interpreted into the model given by
-    <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>.
+    There is a sentence ϕ of the language which is: 
+<div class="paragraph"> </div>
+
 <ul class="doclist">
+<li> True, in the sense that it is true when interpreted into the model given by
+      <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span>.
+
+</li>
 <li> Unprovable: There is no natural deduction derivation of
+      this sentence.
 
 </li>
 </ul>
-    this sentence.
 
 <div class="paragraph"> </div>
 
@@ -833,10 +849,7 @@ Exercise 10 (medium): Prove the following statement using
 
 </li>
 </ul>
-    
-</li>
-</ul>
- This last fact is somewhat of a coincidence. Gödel's
+     This last fact is somewhat of a coincidence. Gödel's
     incompleteness theorem applies equally to say, second-order
     arithmetic. That theory also has a (different!) sentence which is
     true when interpreted into Coq's <span class="inlinecode"><a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#nat"><span class="id" title="inductive">nat</span></a></span> type, but unprovable in this

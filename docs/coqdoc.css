@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
+.paragraph {
+    margin-top: 1em;
+}
+    
 .exercise_title {
     font-size: 18px;
     font-weight: 700;
@@ -25,7 +29,7 @@
 
 body{
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     color: #2D2D2D
 }
 
@@ -98,7 +102,7 @@ div:empty{ display: none;}
 }
 
 .doc + .code{
-  margin-top:0.5em;
+  margin-top:1.5em;
 }
 
 .block{
