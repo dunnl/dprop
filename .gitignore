@@ -1,0 +1,17 @@
+*~
+*.vo
+*.vos
+*.vok
+*.glob
+*.aux
+*.d
+*.crashcoqide
+*.conf
+Makefile.coq
+.merlin
+html/
+\#*
+.\#*
+ignore/
+_build/
+*.lia.cache
