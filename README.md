@@ -4,6 +4,13 @@ https://dunnl.github.io/dprop/
 
 **DProp** ("Dee prop"): A deep embedding of classical propositional logic into Coq.
 
+:warning: This repo is still under development. The homework exercises may be slightly impacted by changes.
+
+Errata for PL clubbers doing the homework (mistakes/clarifications fixed between from Monday's announcement and Friday's talk):
+- Exercise 6 has to be proved on pen and paper, not Coq
+- Some commits define negation elimination as ex falso which isn't complete
+- My "double negation elimination" rule is actually reductio absurdum
+
 ----
 
 This file is a quick tutorial to using Coq as a logical framework to
