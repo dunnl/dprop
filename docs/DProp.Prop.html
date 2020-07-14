@@ -433,22 +433,33 @@ Exercise 6 (hard): Why did the last exercise require law of
     This section explores basic proof theory. The goal is to define a
     particular syntactical notion called "proof," where each proof is
     associated with a formula called its "conclusion." Formulas with
-    proofs are "theorems." The main theorem is that a formula ϕ
-    entailed by Γ precisely if there is a proof with conclusion ϕ
-    using only axioms from Γ, i.e. theorems are exactly validities.
-
-<div class="paragraph"> </div>
-
-  
+    proofs are "theorems." Later, our primary goal will be to show
+    that a formula ϕ is entailed by Γ precisely if there is a proof
+    with conclusion ϕ using only axioms from Γ, i.e. the theorems are
+    exactly the valid statements. (Many logics do not have this strong
+    property, but propositional logic does.)  
 <div class="paragraph"> </div>
 
  The following proof system is a natural deduction, which is
     essentially the type system of the simply typed lambda
     calculus. However, we are not formalizing lambda terms here, only
-    the type inhabitation property itself.
+    the type inhabitation property itself. To be precise, you might
+    call this a version of natural deduction with localized
+    hypotheses, but without proof objects.
 
+<div class="paragraph"> </div>
+
+    The distinguishing feature of natural deduction is that each
+    logical connective is defined by introduction and elimination
+    rules. Another common system is a "sequent calculus," which looks
+    visually similar but is subtly different. A sequent calculus would
+    better highlight the symmetries of logic and lend itself better to
+    automated proof search and inversion lemmas (discussed briefly in
+    the section on incompleteness). 
 </div>
 <div class="code">
+
+<br/>
 <span class="id" title="keyword">Reserved Notation</span> &quot;Γ ⊢ ϕ" (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 90).<br/>
 <span class="id" title="keyword">Inductive</span> <a name="provable"><span class="id" title="inductive">provable</span></a> (<span class="id" title="var">Γ</span> : <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Datatypes.html#list"><span class="id" title="inductive">list</span></a> <a class="idref" href="DProp.Prop.html#sentence"><span class="id" title="inductive">sentence</span></a>) : <a class="idref" href="DProp.Prop.html#sentence"><span class="id" title="inductive">sentence</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <span class="id" title="keyword">Prop</span> :=<br/>
 | <a name="j_var"><span class="id" title="constructor">j_var</span></a> : <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Lists.List.html#In"><span class="id" title="definition">List.In</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a><br/>
@@ -576,17 +587,34 @@ To picture substitution, imagine a natural deduction derivation D
 </div>
 
 <div class="doc">
-This next theorem is difficult to show, even for such a simple
-    logic. In fact, that we won't even try to prove it
-    in Coq. You are encouraged to attempt it to find where the
-    difficulty lies.
+Our next theorem is the converse of soundness, known as semantic
+    completeness. It states that logically valid sentences have
+    proofs. There is another notion of completeness ("syntactical
+    (in)completeness") discussed later. It is sometimes clear from
+    context which notion of completeness one has in mind, since
+    well-known logics have equally well-known completeness properties,
+    but this can also be a source of confusion to newcomers. The
+    reader is advised to be very careful when reading discussions of
+    this topic on the internet, which are frequently confusing and
+    often simply incorrect.
+
+<div class="paragraph"> </div>
+
+    Many logics do not have semantic completeness. Fortunately,
+    propositional logic is one of the logics with this
+    property. Unfortunately, proving this is difficult, even for such
+    a simple system. In fact, that we won't even try to prove it in
+    Coq. You are encouraged to attempt it to find where the difficulty
+    lies.
 
 <div class="paragraph"> </div>
 
     Why should this be hard to prove? Consider the premise: In all
     valuations satisfying every sentence of Γ, ϕ is true. This quite
-    abstract condition is essentially a statement about truth tables:
-    "If all rows of a truth table that also satisfy each formula in Γ
+    abstract condition is a statement about truth tables. If we read
+    the statement of completeness as the type of a constructive proof
+    in Coq, we find a challenging problem: "Given the fact that all
+    rows of a truth table that happen to satisfy each formula in Γ
     also satisfy ϕ, find a natural deduction derivation of ϕ."
 
 <div class="paragraph"> </div>
@@ -595,17 +623,14 @@ This next theorem is difficult to show, even for such a simple
     even its basic structure. The sentences of Γ may also be very
     complex, perhaps more complex than ϕ, so they don't necessary tell
     us anything about ϕ's subformulas. In fact, while ϕ may be true
-    under every (Γ-satisfying) valuation, each row of the truth table
-    might make ϕ true "for different reasons," so to speak. Where do
-    we get started?
+    under every Γ-satisfying valuation, each Γ-satisfying row of the
+    truth table might make ϕ true "for different reasons," so to speak
+    (try some examples). Where do we get started?
 
 <div class="paragraph"> </div>
 
-    Nonetheless, this theorem is true, and can even be proved constructively.
-
-<div class="paragraph"> </div>
-
-
+    Nonetheless, this theorem is true, and can even be proved
+    constructively. For now, we admit it without proof.  
 </div>
 <div class="code">
 <span class="id" title="keyword">Theorem</span> <a name="completeness"><span class="id" title="lemma">completeness</span></a> :  <span class="id" title="keyword">forall</span> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop.html#f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">⊧</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#1c93e43e07fbeaeb6a625cb6614beb5d"><span class="id" title="notation">-&gt;</span></a> <a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a> <a class="idref" href="DProp.Prop.html#417d4f8793ef9552198c889adf95d0f2"><span class="id" title="notation">⊢</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a>.<br/>
@@ -740,7 +765,10 @@ Exercise 9 (easy):
     illustrative example: Perhaps we prove <span class="inlinecode"><span class="id" title="var">P</span></span> by showing <span class="inlinecode"><span class="id" title="var">Q</span></span> <span class="inlinecode">⇒</span> <span class="inlinecode"><span class="id" title="var">P</span></span> and
     <span class="inlinecode"><span class="id" title="var">Q</span></span>. How can we rule this out? Fundamentally we need a
     <i>cut-elimination</i> theorem, specifically the corollary of a
-    canonical form lemma (or inversion lemma).
+    canonical form lemma (or inversion lemma). This would justify a
+    more controlled case analysis by showing, without loss of
+    generality, that we may assume proofs are of a particularly simple
+    form.
 
 <div class="paragraph"> </div>
 

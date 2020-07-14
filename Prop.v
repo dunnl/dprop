@@ -223,17 +223,27 @@ Qed.
     This section explores basic proof theory. The goal is to define a
     particular syntactical notion called "proof," where each proof is
     associated with a formula called its "conclusion." Formulas with
-    proofs are "theorems." The main theorem is that a formula ϕ
-    entailed by Γ precisely if there is a proof with conclusion ϕ
-    using only axioms from Γ, i.e. theorems are exactly validities.
-
-  *)
+    proofs are "theorems." Later, our primary goal will be to show
+    that a formula ϕ is entailed by Γ precisely if there is a proof
+    with conclusion ϕ using only axioms from Γ, i.e. the theorems are
+    exactly the valid statements. (Many logics do not have this strong
+    property, but propositional logic does.)  *)
 
 (** The following proof system is a natural deduction, which is
     essentially the type system of the simply typed lambda
     calculus. However, we are not formalizing lambda terms here, only
-    the type inhabitation property itself.
-*)
+    the type inhabitation property itself. To be precise, you might
+    call this a version of natural deduction with localized
+    hypotheses, but without proof objects.
+
+    The distinguishing feature of natural deduction is that each
+    logical connective is defined by introduction and elimination
+    rules. Another common system is a "sequent calculus," which looks
+    visually similar but is subtly different. A sequent calculus would
+    better highlight the symmetries of logic and lend itself better to
+    automated proof search and inversion lemmas (discussed briefly in
+    the section on incompleteness). *)
+
 Reserved Notation "Γ ⊢ ϕ" (at level 90).
 Inductive provable (Γ : list sentence) : sentence -> Prop :=
 | j_var : forall ϕ, List.In ϕ Γ -> Γ ⊢ ϕ
@@ -329,28 +339,42 @@ Proof.
 Admitted.
 
 
-(** This next theorem is difficult to show, even for such a simple
-    logic. In fact, that we won't even try to prove it
-    in Coq. You are encouraged to attempt it to find where the
-    difficulty lies.
+(** Our next theorem is the converse of soundness, known as semantic
+    completeness. It states that logically valid sentences have
+    proofs. There is another notion of completeness ("syntactical
+    (in)completeness") discussed later. It is sometimes clear from
+    context which notion of completeness one has in mind, since
+    well-known logics have equally well-known completeness properties,
+    but this can also be a source of confusion to newcomers. The
+    reader is advised to be very careful when reading discussions of
+    this topic on the internet, which are frequently confusing and
+    often simply incorrect.
+
+    Many logics do not have semantic completeness. Fortunately,
+    propositional logic is one of the logics with this
+    property. Unfortunately, proving this is difficult, even for such
+    a simple system. In fact, that we won't even try to prove it in
+    Coq. You are encouraged to attempt it to find where the difficulty
+    lies.
 
     Why should this be hard to prove? Consider the premise: In all
     valuations satisfying every sentence of Γ, ϕ is true. This quite
-    abstract condition is essentially a statement about truth tables:
-    "If all rows of a truth table that also satisfy each formula in Γ
+    abstract condition is a statement about truth tables. If we read
+    the statement of completeness as the type of a constructive proof
+    in Coq, we find a challenging problem: "Given the fact that all
+    rows of a truth table that happen to satisfy each formula in Γ
     also satisfy ϕ, find a natural deduction derivation of ϕ."
 
     Notice the premise gives us almost no information about ϕ, not
     even its basic structure. The sentences of Γ may also be very
     complex, perhaps more complex than ϕ, so they don't necessary tell
     us anything about ϕ's subformulas. In fact, while ϕ may be true
-    under every (Γ-satisfying) valuation, each row of the truth table
-    might make ϕ true "for different reasons," so to speak. Where do
-    we get started?
+    under every Γ-satisfying valuation, each Γ-satisfying row of the
+    truth table might make ϕ true "for different reasons," so to speak
+    (try some examples). Where do we get started?
 
-    Nonetheless, this theorem is true, and can even be proved constructively.
-
-*)
+    Nonetheless, this theorem is true, and can even be proved
+    constructively. For now, we admit it without proof.  *)
 Theorem completeness :  forall Γ ϕ, Γ ⊧ ϕ -> Γ ⊢ ϕ.
 Proof.
   intros Γ ϕ.
@@ -463,7 +487,10 @@ Abort.
     illustrative example: Perhaps we prove [P] by showing [Q ⇒ P] and
     [Q]. How can we rule this out? Fundamentally we need a
     _cut-elimination_ theorem, specifically the corollary of a
-    canonical form lemma (or inversion lemma).
+    canonical form lemma (or inversion lemma). This would justify a
+    more controlled case analysis by showing, without loss of
+    generality, that we may assume proofs are of a particularly simple
+    form.
 
     We won't prove this hard theorem here. Instead, we can show the
     above theorem by using soundness: We cannot prove [P] because it
