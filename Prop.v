@@ -250,9 +250,9 @@ Inductive provable (Γ : list sentence) : sentence -> Prop :=
 | j_conj_intro : forall ϕ ψ, Γ ⊢ ϕ -> Γ ⊢ ψ -> Γ ⊢ ϕ ∧ ψ
 | j_conj_elim1 : forall ϕ ψ, Γ ⊢ ϕ ∧ ψ -> Γ ⊢ ϕ
 | j_conj_elim2 : forall ϕ ψ, Γ ⊢ ϕ ∧ ψ -> Γ ⊢ ψ
-| j_neg_intro : forall ϕ, ϕ :: Γ ⊢ ¬ ⊤ -> Γ ⊢ ¬ ϕ
-| j_neg_elim : forall ϕ, Γ ⊢ ⊥ -> Γ ⊢ ϕ
-| j_dne: forall ϕ, (¬ ϕ :: Γ ⊢ ¬ ⊤) -> Γ ⊢ ϕ
+| j_neg_intro : forall ϕ, ϕ :: Γ ⊢ ⊥ -> Γ ⊢ ¬ ϕ
+| j_neg_elim : forall ϕ ψ, Γ ⊢ ϕ -> Γ ⊢ ¬ ϕ -> Γ ⊢ ψ
+| j_raa: forall ϕ, (¬ ϕ :: Γ ⊢ ¬ ⊤) -> Γ ⊢ ϕ
 | j_top_intro : Γ ⊢ ⊤
 where "Γ ⊢ ϕ" := (provable Γ ϕ).
 
@@ -276,8 +276,8 @@ Proof.
   - eapply j_conj_elim2. eauto.
   - eapply j_neg_intro.
     specialize (IHHϕ (ϕ :: Γ1)). simpl in *. auto.
-  - eapply j_neg_elim. eauto using IHHϕ.
-  - eapply j_dne. specialize (IHHϕ (¬ ϕ :: Γ1)).
+  - eapply j_neg_elim. eapply IHHϕ1; reflexivity. auto.
+  - eapply j_raa. specialize (IHHϕ (¬ ϕ :: Γ1)).
     simpl in *. eauto.
   - apply j_top_intro.
 Qed.
@@ -312,7 +312,7 @@ Proof.
   - eapply j_conj_elim2; auto.
   - apply j_neg_intro. specialize (IHJ1 (ϕ0 :: Γ1)). simpl in *. eauto.
   - apply j_neg_elim with (ϕ := ϕ0); auto.
-  - apply j_dne.
+  - apply j_raa.
     specialize (IHJ1 (¬ ϕ0 :: Γ1)). simpl in *. eauto.
   - apply j_top_intro.
 Qed.
@@ -331,9 +331,9 @@ Qed.
 (** Exercise 7 (medium/hard): Prove that all sentences provable from Γ
     are logically entailed by Γ.
 
-    The negation introduction and double negation elimination cases
-    may require some pen-and-paper thinking. You will certainly need
-    to use the [lem] tactic at some point. *)
+    The negation introduction and reductio ad absurdum cases may
+    require some pen-and-paper thinking. You will certainly need to
+    use the [lem] tactic at some point. *)
 Theorem soundness : forall Γ ϕ, (Γ ⊢ ϕ) -> Γ ⊧ ϕ.
 Proof.
 Admitted.
@@ -401,8 +401,9 @@ Proof.
       as if were trying to show there are no proofs of anything. To avoid this silly behavior,
       we tell Coq to remember both the conclusion P and the emptiness of the context.
       We also discharge trivial cases instantly. *)
+    Ltac cleanup := repeat match goal with | H : _ |- _ => specialize (H eq_refl) end.
     remember nil as empty; remember P as conc;
-    induction J; subst.
+      induction J; subst; cleanup.
     + SCase "j_var".
       (* for you to finish *)
       admit.
@@ -410,7 +411,6 @@ Proof.
       (* contradiction, the conclusions don't match *)
       inversion Heqconc.
     + SCase "j_conj_elim1".
-      specialize (IHJ eq_refl).
       (* Why doesn't the induction hypothesis apply?
          What happens if you try [inversion] on the [J]? Why?
        *)
@@ -422,12 +422,11 @@ Proof.
       (* contradiction, the conclusions don't match *)
       inversion Heqconc.
     + SCase "j_neg_elim".
-      specialize (IHJ eq_refl).
       (* Why doesn't the induction hypothesis apply?
          What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
-    + SCase "j_dne".
+    + SCase "j_raa".
       (* Why doesn't the induction hypothesis apply?
          What happens if you try [inversion] on the [J]? Why?
        *)
@@ -437,7 +436,7 @@ Proof.
       inversion Heqconc.
   - Case "~ P is not provable".
     remember nil as empty; remember (¬ P) as conc;
-    induction J; subst.
+    induction J; subst; cleanup.
     + SCase "j_var".
       (* for you to finish *)
       admit.
@@ -445,7 +444,6 @@ Proof.
       (* contradiction, the conclusions don't match *)
       inversion Heqconc.
     + SCase "j_conj_elim1".
-      specialize (IHJ eq_refl).
       (* What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
@@ -457,11 +455,10 @@ Proof.
       (* What happens if you try [inversion] on the [J]? Why? *)
       admit.
     + SCase "j_neg_elim".
-      specialize (IHJ eq_refl).
       (* What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
-    + SCase "j_dne".
+    + SCase "j_raa".
       (* What happens if you try [inversion] on the [J]? Why?
        *)
       admit.
@@ -480,7 +477,7 @@ Abort.
     rule, we cannot be confident that the rule used to prove the
     hypothesis is a corresponding induction rule. Indeed, it might not
     be: Perhaps we prove [P] by proving [P /\ Q], and perhaps to prove
-    /that/ we use double negation elimination (for example). Can you
+    /that/ we use reductio ad absurdum (for example). Can you
     rule this out?
 
     Although implication is not defined primitively, it is an
