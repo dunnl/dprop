@@ -9,7 +9,7 @@ https://dunnl.github.io/dprop/
 Errata for PL clubbers doing the homework (mistakes/clarifications fixed between Monday's announcement and Friday's talk):
 - Exercise 6 has to be proved on pen and paper, not Coq
 - Some commits define negation elimination as ex falso which isn't complete
-- My "double negation elimination" rule is actually reductio absurdum
+- My "double negation elimination" rule was actually reductio absurdum
 
 ----
 
