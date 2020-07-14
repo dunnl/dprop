@@ -89,9 +89,7 @@ Fixpoint denotation (v : valuation) (s : sentence) : Prop :=
 (** Hereafter we let [denotation] take the valuation as an implicit
     argument. This follows common mathematical practice in which one
     generally assumes some valuation is clear from the context.
-
-    Some functions, such as [entails], will take valuations explicitly
-    when this is more natural. *)
+*)
 Arguments denotation {v} s.
 
 Notation "⟦ ϕ ⟧" := (denotation ϕ). (* \llbracket and \rrbracket *)
