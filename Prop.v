@@ -95,7 +95,7 @@ Arguments denotation {v} s.
 Notation "⟦ ϕ ⟧" := (denotation ϕ). (* \llbracket and \rrbracket *)
 
 (** In this file, we're not very interested in individual valuations. Instead,
-    we would like define a notion of "truth" which abstracts over the valuation,
+    we would like to define a notion of "truth" which abstracts over the valuation,
     capturing the idea that a sentence is true under every possible interpretation.
 *)
 Definition tautology (ϕ : sentence) := forall v : valuation, ⟦ ϕ ⟧.
@@ -125,7 +125,7 @@ Qed.
 
 Ltac lem ϕ := destruct (full_lem ϕ).
 
-(** A set of sentences is _satisfied_ or _modelled_ by a valuation if
+(** A set of sentences is _satisfied_ or _modeled_ by a valuation if
     all of its elements are true under that valuation. Elements of [Γ]
     may also be called "axioms." *)
 Definition models (v : valuation) (Γ : list sentence) : Prop :=
