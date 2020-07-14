@@ -214,8 +214,9 @@ Admitted.
 
  (** Exercise 6 (hard): Why did the last exercise require law of
      excluded middle, when Coq trivially proves the following
-     intuitionistic tautology? Can you prove that the last exercise
-     cannot be completed without LEM?  *)
+     intuitionistic tautology? Can you prove (with pen and paper, not
+     in Coq) that the last exercise cannot be completed without LEM?
+     *)
 Goal forall p : Prop, p <-> (p \/ ~ True).
   tauto.
 Qed.
