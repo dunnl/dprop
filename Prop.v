@@ -94,6 +94,29 @@ Arguments denotation {v} s.
 
 Notation "⟦ ϕ ⟧" := (denotation ϕ). (* \llbracket and \rrbracket *)
 
+(** The law of excluded middle extends to the entire language straightforwardly. *)
+Lemma full_lem : forall {v : valuation}, forall ϕ, ⟦ ϕ ⟧ \/ ⟦ ¬ ϕ ⟧.
+Proof.
+  intros v ϕ. induction ϕ.
+  - simpl. intuition.
+  - exact (excluded_middle n).
+  - simpl. intuition.
+  - simpl. intuition.
+Qed.
+
+(** This tactic splits a (Coq-level) proof into two cases: one in
+    which ϕ is true and one in which it is false. *)
+Ltac lem ϕ := destruct (full_lem ϕ).
+
+(** Sample usage of the [lem] tactic. *)
+Goal forall ϕ, forall v : valuation, ⟦ ϕ ⟧ \/ ⟦ ¬ ϕ ⟧.
+Proof.
+  intros.
+  lem ϕ.
+  - left. auto.
+  - right. auto.
+Qed.
+
 (** In this file, we're not very interested in individual valuations. Instead,
     we would like to define a notion of "truth" which abstracts over the valuation,
     capturing the idea that a sentence is true under every possible interpretation.
@@ -107,23 +130,6 @@ Definition tautology (ϕ : sentence) := forall v : valuation, ⟦ ϕ ⟧.
 (** But we aren't just interested in tautologies. Often we want to
     restrict our attention to only those valuations which make certain
     pre-chosen sentences true. We develop this idea now.  *)
-
-(** We require that the range of denotations for [v : valuation]
-    satisfy the law of excluded middle.  (You can read 'r' as 'range'
-    or 'restricted', since this stipulation is only required for those
-    propositions which are the denotation of a given valuation,
-    i.e. in the range of some valuation. *)
-
-Lemma full_lem : forall {v : valuation}, forall ϕ, ⟦ ϕ ⟧ \/ ⟦ ¬ ϕ ⟧.
-Proof.
-  intros v ϕ. induction ϕ.
-  - simpl. intuition.
-  - exact (excluded_middle n).
-  - simpl. intuition.
-  - simpl. intuition.
-Qed.
-
-Ltac lem ϕ := destruct (full_lem ϕ).
 
 (** A set of sentences is _satisfied_ or _modeled_ by a valuation if
     all of its elements are true under that valuation. Elements of [Γ]
@@ -149,15 +155,6 @@ Definition entails (Γ : list sentence) (ϕ : sentence) :=
   forall v, models v Γ -> ⟦ ϕ ⟧.
 
 Notation "Γ ⊧ ϕ" := (entails Γ ϕ) (at level 70).
-
-(** Sample usage of the [lem] tactic. *)
-Goal forall ϕ, forall v : valuation, ⟦ ϕ ⟧ \/ ⟦ ¬ ϕ ⟧.
-Proof.
-  intros.
-  lem ϕ.
-  - left. auto.
-  - right. auto.
-Qed.
 
 Hint Unfold tautology : dp.
 Hint Unfold models : dp.

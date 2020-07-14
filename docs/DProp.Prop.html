@@ -200,8 +200,49 @@ Hereafter we let <span class="inlinecode"><a class="idref" href="DProp.Prop_solu
 </div>
 
 <div class="doc">
+The law of excluded middle extends to the entire language straightforwardly. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Lemma</span> <a name="full_lem"><span class="id" title="lemma">full_lem</span></a> : <span class="id" title="keyword">forall</span> {<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop.html#valuation"><span class="id" title="class">valuation</span></a>}, <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">\/</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">ϕ</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">exact</span> (<a class="idref" href="DProp.Prop.html#excluded_middle"><span class="id" title="method">excluded_middle</span></a> <span class="id" title="var">n</span>).<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+This tactic splits a (Coq-level) proof into two cases: one in
+    which ϕ is true and one in which it is false. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Ltac</span> <span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span> := <span class="id" title="tactic">destruct</span> (<a class="idref" href="DProp.Prop.html#full_lem"><span class="id" title="lemma">full_lem</span></a> <span class="id" title="var">ϕ</span>).<br/>
+
+<br/>
+</div>
+
+<div class="doc">
+Sample usage of the <span class="inlinecode"><span class="id" title="var">lem</span></span> tactic. 
+</div>
+<div class="code">
+<span class="id" title="keyword">Goal</span> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">v</span></a> <a name="Unnamed_thm"><span class="id" title="definition">:</span></a> <a name="Unnamed_thm"><span class="id" title="definition">valuation</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a> <a name="Unnamed_thm"><span class="id" title="definition">\/</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">¬</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a>.<br/>
+<span class="id" title="keyword">Proof</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
+&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">left</span>. <span class="id" title="tactic">auto</span>.<br/>
+&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">auto</span>.<br/>
+<span class="id" title="keyword">Qed</span>.<br/>
+
+<br/>
+</div>
+
+<div class="doc">
 In this file, we're not very interested in individual valuations. Instead,
-    we would like define a notion of "truth" which abstracts over the valuation,
+    we would like to define a notion of "truth" which abstracts over the valuation,
     capturing the idea that a sentence is true under every possible interpretation.
 
 </div>
@@ -222,32 +263,7 @@ The universal quantifier---the dependent product---can be thought
     pre-chosen sentences true. We develop this idea now.  
 <div class="paragraph"> </div>
 
- We require that the range of denotations for <span class="inlinecode"><a class="idref" href="DProp.Prop.html#v"><span class="id" title="variable">v</span></a></span> <span class="inlinecode">:</span> <span class="inlinecode"><a class="idref" href="DProp.Prop_solutions.html#valuation"><span class="id" title="record">valuation</span></a></span>
-    satisfy the law of excluded middle.  (You can read 'r' as 'range'
-    or 'restricted', since this stipulation is only required for those
-    propositions which are the denotation of a given valuation,
-    i.e. in the range of some valuation. 
-</div>
-<div class="code">
-
-<br/>
-<span class="id" title="keyword">Lemma</span> <a name="full_lem"><span class="id" title="lemma">full_lem</span></a> : <span class="id" title="keyword">forall</span> {<span class="id" title="var">v</span> : <a class="idref" href="DProp.Prop.html#valuation"><span class="id" title="class">valuation</span></a>}, <span class="id" title="keyword">forall</span> <span class="id" title="var">ϕ</span>, <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a> <a class="idref" href="http://coq.inria.fr/distrib/V8.11.1/stdlib//Coq.Init.Logic.html#f031fe1957c4a4a8e217aa46af2b4e25"><span class="id" title="notation">\/</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟦</span></a> <a class="idref" href="DProp.Prop.html#89335bb7773696a226bf41e8343e6c3f"><span class="id" title="notation">¬</span></a> <a class="idref" href="DProp.Prop.html#6c4dbec1c9102e1076a6a6ca04576cf0"><span class="id" title="variable">ϕ</span></a> <a class="idref" href="DProp.Prop.html#a28bfd0a35de9a5c69829697b021d0f5"><span class="id" title="notation">⟧</span></a>.<br/>
-<span class="id" title="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">intros</span> <span class="id" title="var">v</span> <span class="id" title="var">ϕ</span>. <span class="id" title="tactic">induction</span> <span class="id" title="var">ϕ</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">exact</span> (<a class="idref" href="DProp.Prop.html#excluded_middle"><span class="id" title="method">excluded_middle</span></a> <span class="id" title="var">n</span>).<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">simpl</span>. <span class="id" title="tactic">intuition</span>.<br/>
-<span class="id" title="keyword">Qed</span>.<br/>
-
-<br/>
-<span class="id" title="keyword">Ltac</span> <span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span> := <span class="id" title="tactic">destruct</span> (<a class="idref" href="DProp.Prop.html#full_lem"><span class="id" title="lemma">full_lem</span></a> <span class="id" title="var">ϕ</span>).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-A set of sentences is <i>satisfied</i> or <i>modelled</i> by a valuation if
+ A set of sentences is <i>satisfied</i> or <i>modeled</i> by a valuation if
     all of its elements are true under that valuation. Elements of <span class="inlinecode"><a class="idref" href="DProp.Prop.html#1b004e48cd1f64e22d5c000cf0d7f047"><span class="id" title="variable">Γ</span></a></span>
     may also be called "axioms." 
 </div>
@@ -288,21 +304,6 @@ A set of axioms <i>entails</i> a sentence when that sentence is true
 
 <br/>
 <span class="id" title="keyword">Notation</span> <a name="f0256880c5e17791a18a195b1af6d27f"><span class="id" title="notation">&quot;</span></a>Γ ⊧ ϕ" := (<a class="idref" href="DProp.Prop.html#entails"><span class="id" title="definition">entails</span></a> <span class="id" title="var">Γ</span> <span class="id" title="var">ϕ</span>) (<span class="id" title="tactic">at</span> <span class="id" title="keyword">level</span> 70).<br/>
-
-<br/>
-</div>
-
-<div class="doc">
-Sample usage of the <span class="inlinecode"><span class="id" title="var">lem</span></span> tactic. 
-</div>
-<div class="code">
-<span class="id" title="keyword">Goal</span> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm"><span class="id" title="definition">v</span></a> <a name="Unnamed_thm"><span class="id" title="definition">:</span></a> <a name="Unnamed_thm"><span class="id" title="definition">valuation</span></a><a name="Unnamed_thm"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a> <a name="Unnamed_thm"><span class="id" title="definition">\/</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟦</span></a> <a name="Unnamed_thm"><span class="id" title="definition">¬</span></a> <a name="Unnamed_thm"><span class="id" title="definition">ϕ</span></a> <a name="Unnamed_thm"><span class="id" title="definition">⟧</span></a>.<br/>
-<span class="id" title="keyword">Proof</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="tactic">intros</span>.<br/>
-&nbsp;&nbsp;<span class="id" title="var">lem</span> <span class="id" title="var">ϕ</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">left</span>. <span class="id" title="tactic">auto</span>.<br/>
-&nbsp;&nbsp;- <span class="id" title="tactic">right</span>. <span class="id" title="tactic">auto</span>.<br/>
-<span class="id" title="keyword">Qed</span>.<br/>
 
 <br/>
 <span class="id" title="keyword">Hint Unfold</span> <a class="idref" href="DProp.Prop.html#tautology"><span class="id" title="definition">tautology</span></a> : <span class="id" title="var">dp</span>.<br/>
@@ -411,8 +412,9 @@ Exercise <span class="inlinecode">5</span> (medium): Prove that <span class="inl
 <div class="doc">
 Exercise 6 (hard): Why did the last exercise require law of
      excluded middle, when Coq trivially proves the following
-     intuitionistic tautology? Can you prove (with pen and paper) that
-     the last exercise cannot be completed without LEM?  
+     intuitionistic tautology? Can you prove (with pen and paper, not
+     in Coq) that the last exercise cannot be completed without LEM?
+     
 </div>
 <div class="code">
 <span class="id" title="keyword">Goal</span> <a name="Unnamed_thm0"><span class="id" title="definition">forall</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">:</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">Prop</span></a><a name="Unnamed_thm0"><span class="id" title="definition">,</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">&lt;-&gt;</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">(</span></a><a name="Unnamed_thm0"><span class="id" title="definition">p</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">\/</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">~</span></a> <a name="Unnamed_thm0"><span class="id" title="definition">True</span></a><a name="Unnamed_thm0"><span class="id" title="definition">)</span></a>.<br/>
