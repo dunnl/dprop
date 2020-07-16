@@ -475,7 +475,7 @@ Abort.
 (** The theorem above seems obvious, but it is hard to show by
     examining proof trees. The trouble is that in each elimination
     rule, we cannot be confident that the rule used to prove the
-    hypothesis is a corresponding induction rule. Indeed, it might not
+    hypothesis is a corresponding introduction rule. Indeed, it might not
     be: Perhaps we prove [P] by proving [P /\ Q], and perhaps to prove
     /that/ we use reductio ad absurdum (for example). Can you
     rule this out?
